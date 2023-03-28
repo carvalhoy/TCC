@@ -98,11 +98,3 @@ plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 2])])
 report_fit(result)
 
 plt.show()
-
-## comentário de teste
-## comentário de teste
-## comentário de teste
-## comentário de teste
-## comentário de teste
-## comentário de teste
-## comentário de teste
