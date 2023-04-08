@@ -1,3 +1,5 @@
+
+# importanto bibliotecas:
 import numpy as np
 import scipy.integrate
 import scipy.optimize
