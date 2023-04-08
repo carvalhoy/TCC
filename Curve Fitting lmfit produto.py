@@ -93,8 +93,9 @@ data_fitted = pd.DataFrame(g([0, 240], y0, [result.params]).y).transpose()
 plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 2], '-', linewidth=2, color='red', label='fitted data')
 plt.legend()
 plt.xlim([0, max(t_measured)])
-plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 2])])
+plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 0])])
 # display fitted statistics
 report_fit(result)
 
 plt.show()
+
