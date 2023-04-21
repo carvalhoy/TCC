@@ -40,7 +40,7 @@ def g(t, x0, paras):
     """
     Solution to the ODE x'(t) = f(t,x,k) with initial condition x(0) = x0
     """
-    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25))
+    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25), max_step=0.05)
     return x
 
 
@@ -75,7 +75,7 @@ plt.scatter(t_measured, dados_P['concentração'], marker='o', color='b', label=
 # set parameters including bounds; you can also fix parameters (use vary=False)
 params = Parameters()
 
-params.add('S_in', value=100., min=0.0001)
+params.add('S_in', value=0., vary=False)
 params.add('mumax_X', value=0.3, min=0.0001)
 params.add('K_S', value=0.10, min=0.0001)
 params.add('Y_X_S', value=0.7, min=0)

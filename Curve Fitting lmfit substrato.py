@@ -30,9 +30,11 @@ def f(t, y, paras):
     # the model equations
 
     mu = mumax_X*S/(K_S + S) #dia^-1
+
     dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X
     dX_dt = (D)*(-X) + (mu-k_dec)*X
     dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
+    
     return [dS_dt, dX_dt, dP_dt]
 
 
@@ -40,7 +42,7 @@ def g(t, x0, paras):
     """
     Solution to the ODE x'(t) = f(t,x,k) with initial condition x(0) = x0
     """
-    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25))
+    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25), max_step=0.05)
     return x
 
 
