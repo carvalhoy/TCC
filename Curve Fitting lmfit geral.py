@@ -40,7 +40,7 @@ def g(t, x0, paras):
     """
     Solution to the ODE x'(t) = f(t,x,k) with initial condition x(0) = x0
     """
-    x = scipy.integrate.solve_ivp(f, t, x0, 'Radau', args=(paras), t_eval=np.linspace(min(t), max(t), 25), max_step=0.05)
+    x = scipy.integrate.solve_ivp(f, t, x0, 'LSODA', args=(paras), t_eval=np.linspace(min(t), max(t), 25), max_step=0.0005)
     return x
 
 
@@ -55,9 +55,9 @@ def residual(paras, t, data, x0):
     model = pd.DataFrame(model.y).transpose()
 
     # you only have data for one of your variables
-    x2_model = model.iloc[:, 2]
+    x2_model = model.iloc[:, 1]
     x1_model = model.iloc[:, 0]
-    return (x2_model - data).ravel()
+    return ((x2_model - data.iloc[:, 1])+(x1_model-data.iloc[:,0])).ravel()
 
 
 # initial conditions
@@ -70,9 +70,13 @@ y0 = [x10, x20, x30]
 t_measured = np.linspace(0, 240, 25)
 dados_P = pd.read_excel(r"C:\Users\claro\OneDrive\Documentos\Modelos Personalizados do Office\Exp Rao et al .xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
 dados_S = pd.read_excel(r"C:\Users\claro\OneDrive\Documentos\UTFPR\TCC\Código\Rao et al. substrato.xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
-plt.figure()
-plt.scatter(t_measured, dados_P['concentração'], marker='o', color='b', label='measured data', s=75)
 
+data = [dados_S.iloc[:,1],dados_P.iloc[:,1]]
+data = pd.DataFrame(data).transpose()
+print(data)
+plt.figure()
+plt.scatter(t_measured, dados_P['concentração'], marker='o', color='b', label='P exp', s=75)
+plt.scatter(t_measured, dados_S['concentração'], marker='o', color='y', label='S exp', s=75)
 # set parameters including bounds; you can also fix parameters (use vary=False)
 params = Parameters()
 
@@ -86,12 +90,14 @@ params.add('D', value=0., vary=False)
 
 print(pd.DataFrame(g([0, 240], y0, [params]).y).transpose())
 # fit model
-result = minimize(residual, params, args=([0, 240], dados_P['concentração'], y0), method='leastsq')  # leastsq nelder
+result = minimize(residual, params, args=([0, 240], data, y0), method='leastsq')  # leastsq nelder
 # check results of the fit
 data_fitted = pd.DataFrame(g([0, 240], y0, [result.params]).y).transpose()
 
 # plot fitted data
-plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 2], '-', linewidth=2, color='red', label='fitted data')
+
+plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 0], '-', color='g', label='fitted S')
+plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 2], '-', linewidth=2, color='red', label='fitted P')
 plt.legend()
 plt.xlim([0, max(t_measured)])
 plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 0])])
