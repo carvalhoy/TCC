@@ -42,7 +42,7 @@ def g(t, x0, paras):
     """
     Solution to the ODE x'(t) = f(t,x,k) with initial condition x(0) = x0
     """
-    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25), max_step=0.05)
+    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25))
     return x
 
 
@@ -69,8 +69,8 @@ y0 = [x10, x20, x30]
 
 # measured data
 t_measured = np.linspace(0, 240, 25)
-dados_P = pd.read_excel(r"C:\Users\claro\OneDrive\Documentos\Modelos Personalizados do Office\Exp Rao et al .xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
-dados_S = pd.read_excel(r"C:\Users\claro\OneDrive\Documentos\UTFPR\TCC\Código\Rao et al. substrato.xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
+dados_P = pd.read_excel("./xlsx1/produto.xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
+dados_S = pd.read_excel("./xlsx1/substrato.xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
 plt.figure()
 plt.scatter(t_measured, dados_S['concentração'], marker='o', color='b', label='measured data', s=75)
 
