@@ -5,6 +5,8 @@ import scipy.optimize
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime as dt
+from torch.autograd.functional import jacobian
+from torch import tensor, Tensor
 
 def model (t, x, params):
     
@@ -47,7 +49,7 @@ x = [42500.0, 25200.0, 0.0]
 #rotina solve_ivp
 
 #intervalo de integração
-t_step = [0, 240]
+t_step = [0., 240.]
 
 #execução da função
 DOP853 = scipy.integrate.solve_ivp(model, t_step, x, 'DOP853', args=[params3], max_step=0.05)
@@ -86,3 +88,34 @@ ax[0][2].plot(Radau.t, S_radau)
 ax[1][2].plot(Radau.t, X_radau)
 ax[2][2].plot(Radau.t, P_radau)
 plt.show()
+
+def modeltorch (t, x, params):
+    
+    # S_in, mu_max_X, K_S, Y_X_S, Y_P_S, k_dec, V, q = parameters_model
+
+    S = x[0] #g_DQO_S/m^3
+    X = x[1] #g_DQO_X/m^3
+    P = x[2] #g_DQO_P/m^3
+
+    #parâmetros do modelo
+    S_in = params[0]
+    mu_max_X = params[1] #dia^-1
+    K_S = params[2] #g_DQO_S/m^3
+    Y_X_S = params[3] #g_DQO_X/g_DQO_S
+    Y_P_S = params[4] #g_DQO_P/g_DQO_S
+    k_dec = params[5] #dia^-1
+    D = params[6] #dia^-1
+   
+    ##definindo a reação
+    mu = mu_max_X*S/(K_S + S) #dia^-1
+    
+    
+
+    dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X
+    dX_dt = (D)*(-X) + (mu-k_dec)*X
+    dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
+
+
+    return dS_dt, dX_dt, dP_dt
+x = tensor(x)
+print(jacobian(model,(tensor(t_step), x, tensor(list(params)))))
