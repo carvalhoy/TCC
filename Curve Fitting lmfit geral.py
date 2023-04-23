@@ -105,9 +105,7 @@ result = minimize(residual, params, args=([0, 240], data, y0), method='trust-kry
 data_fitted = pd.DataFrame(g([0, 240], y0, [result.params]).y).transpose()
 
 # plot fitted data
-
-plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 0], '-', color='g', label='fitted S')
-plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 2], '-', linewidth=2, color='red', label='fitted P')
+plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 2], '-', linewidth=2, color='red', label='fitted data')
 plt.legend()
 plt.xlim([0, max(t_measured)])
 plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 0])])

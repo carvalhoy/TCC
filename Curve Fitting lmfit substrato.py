@@ -24,7 +24,7 @@ def f(t, y, paras, S_in, D):
 
 
     except KeyError:
-        mumax_X, K_S, Y_X_S, Y_P_S, k_dec = paras
+        S_in, mumax_X, K_S, Y_X_S, Y_P_S, k_dec, D = paras
     # the model equations
 
     mu = mumax_X*S/(K_S + S) #dia^-1
@@ -40,7 +40,7 @@ def g(t, x0, paras, S_in, D):
     """
     Solution to the ODE x'(t) = f(t,x,k) with initial condition x(0) = x0
     """
-    x = scipy.integrate.solve_ivp(f, t, x0, args=([paras, S_in, D]), t_eval=np.linspace(min(t), max(t), 25))
+    x = scipy.integrate.solve_ivp(f, t, x0, args=((paras), S_in, D), t_eval=np.linspace(min(t), max(t), 25))
     return x
 
 
@@ -51,7 +51,7 @@ def residual(paras, t, data, x0):
     """
 
     # x0 = paras['x10'].value, paras['x20'].value, paras['x30'].value
-    model = g(t, x0, (paras), 0, 0)
+    model = g(t, x0, [paras])
     model = pd.DataFrame(model.y).transpose()
 
     # you only have data for one of your variables
@@ -75,17 +75,19 @@ plt.scatter(t_measured, dados_S['concentração'], marker='o', color='b', label=
 # set parameters including bounds; you can also fix parameters (use vary=False)
 params = Parameters()
 
+params.add('S_in', value=100., min=0.0001)
 params.add('mumax_X', value=0.3, min=0.0001)
 params.add('K_S', value=0.10, min=0.0001)
 params.add('Y_X_S', value=0.7, min=0)
 params.add('Y_P_S', value=0.3, min=0)
 params.add('k_dec', value=0.00015, min=0)
+params.add('D', value=0., vary=False)
 
-print(pd.DataFrame(g([0, 240], y0, (params), 0, 0).y).transpose())
+print(pd.DataFrame(g([0, 240], y0, [params]).y).transpose())
 # fit model
 result = minimize(residual, params, args=([0, 240], dados_S['concentração'], y0), method='leastsq')  # leastsq nelder
 # check results of the fit
-data_fitted = pd.DataFrame(g([0, 240], y0, (result.params), 0, 0).y).transpose()
+data_fitted = pd.DataFrame(g([0, 240], y0, [result.params]).y).transpose()
 
 # plot fitted data
 plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 0], '-', linewidth=2, color='red', label='fitted data')
