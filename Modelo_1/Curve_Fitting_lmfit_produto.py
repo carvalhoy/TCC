@@ -40,7 +40,7 @@ def g(t, x0, paras):
     """
     Solution to the ODE x'(t) = f(t,x,k) with initial condition x(0) = x0
     """
-    x = scipy.integrate.solve_ivp(f, t, x0, args=(paras), t_eval=np.linspace(min(t), max(t), 25), max_step=0.05)
+    x = scipy.integrate.solve_ivp(f, t, x0, 'RK45', args=(paras), t_eval=np.linspace(min(t), max(t), 25), rtol=3e-14, atol=1e-18)
     return x
 
 
@@ -60,8 +60,8 @@ def residual(paras, t, data, x0):
 
 
 # initial conditions
-x10 = 42500.
-x20 = 25200.
+x10 = 42.500
+x20 = 25.200
 x30 = 0.
 y0 = [x10, x20, x30]
 
@@ -69,33 +69,36 @@ y0 = [x10, x20, x30]
 t_measured = np.linspace(0, 240, 25)
 dados_P = pd.read_excel(r"C:\Users\claro\OneDrive\Documentos\Modelos Personalizados do Office\Exp Rao et al .xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
 dados_S = pd.read_excel(r"C:\Users\claro\OneDrive\Documentos\UTFPR\TCC\Código\Rao et al. substrato.xlsx", header=None, names=['tempo', 'concentração'], decimal=',')
-plt.figure()
-plt.scatter(t_measured, dados_P['concentração'], marker='o', color='b', label='measured data', s=75)
+dados_P['concentração'] = dados_P['concentração']/1000
+dados_S['concentração'] = dados_S['concentração']/1000
 
 # set parameters including bounds; you can also fix parameters (use vary=False)
 params = Parameters()
 
-params.add('S_in', value=0., vary=False)
-params.add('mumax_X', value=0.3, min=0.0001)
-params.add('K_S', value=0.10, min=0.0001)
-params.add('Y_X_S', value=0.7, min=0)
-params.add('Y_P_S', value=0.3, min=0)
-params.add('k_dec', value=0.00015, min=0)
-params.add('D', value=0., vary=False)
+params.add('S_in', value=0, vary=False)
+params.add('mumax_X', value=0.002, min=0.0001, max=0.015)
+params.add('K_S', value=3.5, min=0.1, max=4)
+params.add('Y_X_S', value=0.1, min=0, max=1)
+params.add('Y_P_S', value=0.7, min=0.1, max=1.5)
+params.add('k_dec', value=0.01, min=0.001, max=1)
+params.add('D', value=0, vary=False)
 
 print(pd.DataFrame(g([0, 240], y0, [params]).y).transpose())
 # fit model
-result = minimize(residual, params, args=([0, 240], dados_P['concentração'], y0), method='leastsq')  # leastsq nelder
+result = minimize(residual, params, args=([0, 240], dados_P['concentração'], y0), method='Nelder-Mead')  # leastsq nelder
 # check results of the fit
 data_fitted = pd.DataFrame(g([0, 240], y0, [result.params]).y).transpose()
 
 # plot fitted data
+plt.figure().suptitle('RK45 + Nelder-Mead')
+plt.scatter(t_measured, dados_P['concentração'], marker='o', color='b', label='measured data', s=75)
 plt.plot(np.linspace(0., 240., 25), data_fitted.iloc[:, 2], '-', linewidth=2, color='red', label='fitted data')
-plt.legend()
 plt.xlim([0, max(t_measured)])
-plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 0])])
+plt.ylim([0, 1.1 * max(data_fitted.iloc[:, 2])])
+plt.xlabel('t - dias')
+plt.ylabel('kgCOD P/m^3')
+plt.draw()
 # display fitted statistics
 report_fit(result)
-
 plt.show()
 

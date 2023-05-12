@@ -102,7 +102,7 @@ def main():
     indice = [0, 1, 2]
     dadoOtimizacao = [dados_S['concentração'], dados_P['concentração']]
     
-    resultProduto = minimize(residual, paras, args=(t_step, dadoOtimizacao[1], max_step, t_solve_ivp, x, indice[2], metodoIntegracao), method=metodoMinimizacao)  # leastsq
+    resultProduto = minimize(residual, paras, args=(t_step, dadoOtimizacao[0], max_step, t_solve_ivp, x, indice[2], metodoIntegracao), method=metodoMinimizacao)  # leastsq
     report_fit(resultProduto) 
     
     
