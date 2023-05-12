@@ -68,11 +68,12 @@ def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
     plt.plot(dados_P['tempo'], dados_P['concentração'], 'o', color='b', label="P exp")
     plt.plot(dados_S['tempo'], dados_S['concentração'], 'o', color='r', label='S exp') 
     plt.plot(solve_ivp.t, S_solve_ivp, color='red', label='S ajuste')
-    plt.plot(solve_ivp.t, X_solve_ivp, 'o', color='green', label='X ajuste')
-    plt.plot(solve_ivp.t, P_solve_ivp, 'o', color='blue', label='P ajuste')
+    plt.plot(solve_ivp.t, X_solve_ivp, color='green', label='X ajuste')
+    plt.plot(solve_ivp.t, P_solve_ivp, color='blue', label='P ajuste')
     plt.xlabel(r"t - dias")
     plt.ylabel(r"Y - $kgDQO{m^3}$")
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1.05, 1.0) ,fontsize='8')
+    plt.tight_layout()
     plt.show()
         
 def main():
