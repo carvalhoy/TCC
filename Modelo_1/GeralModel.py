@@ -60,21 +60,25 @@ def integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
     solve_ivp = scipy.integrate.solve_ivp(model, t_step, x, metodoIntegracao, t_eval=t_solve_ivp, args=[params], rtol=rtol, atol=atol)
     return solve_ivp
     
-def plotagem(solve_ivp, dados_P, dados_S):
+def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
     #abrindo a tupla retornada em três variáveis
     S_solve_ivp, X_solve_ivp, P_solve_ivp = solve_ivp.y
     #plotando 
-    plt.plot(solve_ivp.t, S_solve_ivp, 'o', color='red')
-    plt.plot(dados_P['tempo'], dados_P['concentração'])
-    plt.plot(dados_S['tempo'], dados_S['concentração']) 
-    plt.plot(solve_ivp.t, X_solve_ivp, 'o', color='green')
-    plt.plot(solve_ivp.t, P_solve_ivp, 'o', color='blue')
+    plt.figure().suptitle(f'${metodo_integracao} + ${metodo_otimizacao}')
+    plt.plot(dados_P['tempo'], dados_P['concentração'], 'o', color='b', label="P exp")
+    plt.plot(dados_S['tempo'], dados_S['concentração'], 'o', color='r', label='S exp') 
+    plt.plot(solve_ivp.t, S_solve_ivp, color='red', label='S ajuste')
+    plt.plot(solve_ivp.t, X_solve_ivp, 'o', color='green', label='X ajuste')
+    plt.plot(solve_ivp.t, P_solve_ivp, 'o', color='blue', label='P ajuste')
+    plt.xlabel(r"t - dias")
+    plt.ylabel(r"Y - $kgDQO{m^3}$")
+    plt.legend()
     plt.show()
         
 def main():
     parametrosDadosXlsx = [0, 240, 25, 3] #tempo inicial, tempo final, número de pontos, algarismos significativos
-    dados_P = ajustarXlsx("../xlsx1/produto.xlsx", parametrosDadosXlsx)
-    dados_S = ajustarXlsx("../xlsx1/substrato.xlsx", parametrosDadosXlsx)
+    dados_P = ajustarXlsx("./xlsx1/produto.xlsx", parametrosDadosXlsx)
+    dados_S = ajustarXlsx("./xlsx1/substrato.xlsx", parametrosDadosXlsx)
     #print(f'Substrato: \n ${dados_S}')  
     #print(f'Produto: \n ${dados_P}')  
 
@@ -117,7 +121,7 @@ def main():
     report_fit(resultSubstrato)
     #execução da função de integração e plotagem do gráfico: 
     print(chalk.green("plotagem chamada para Substrato"))
-    plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S)
+    plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao)
     
     
 main()
