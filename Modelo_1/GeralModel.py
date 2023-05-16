@@ -127,11 +127,11 @@ def main():
      ## definindo parâmetros para Curve Fitting:
     paras = Parameters()
     paras.add('S_in', value=0., vary=False)
-    paras.add('mumax_X', value=0.002, min=0.0001, max=0.015)
-    paras.add('K_S', value=3.5, min=0.1, max=4)
-    paras.add('Y_X_S', value=0.1, min=0, max=1)
-    paras.add('Y_P_S', value=0.7, min=0.1, max=1.5)
-    paras.add('k_dec', value=0.01, min=0.001, max=1)
+    paras.add('mumax_X', value=8.36, min=0.182, max=15.532)
+    paras.add('K_S', value=0.326, min=0.0225, max=0.630)
+    paras.add('Y_X_S', value=0.18, min=0.14, max=0.22)
+    paras.add('Y_P_S', value=0.5, min=0.1, max=1.)
+    paras.add('k_dec', value=0.045, min=0.04, max=0.05)
     paras.add('D', value=0., vary=False)   
      
      ## definindo método de minimização usado na função .minimize:
