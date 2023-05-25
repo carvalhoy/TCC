@@ -88,7 +88,12 @@ def integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
      ## integração do modelo com função .solve_ivp:
     solve_ivp = scipy.integrate.solve_ivp(model, t_step, x, metodoIntegracao, t_eval=t_solve_ivp, args=[params], rtol=rtol, atol=atol)
     return solve_ivp
-    
+
+def  r2(dado, indice, metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
+    otim_produto = integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol).y
+    r_square = 1-sum(np.square(dado-otim_produto[indice]))/sum(np.square(dado-np.mean(dado)))
+    return r_square
+
 def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
      ## abrindo a tupla retornada em três variáveis:
     S_solve_ivp, X_solve_ivp, P_solve_ivp = solve_ivp.y    
@@ -114,7 +119,8 @@ def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
     plt.tight_layout()    
      ## segurar a exibição das figuras até o final de todos os ajustes:
     plt.draw()
-        
+
+
 def main():
     parametrosDadosXlsx = [0, 240, 25, 3] #tempo inicial, tempo final, número de pontos, algarismos significativos
     
@@ -156,8 +162,14 @@ def main():
     print("minimize chamada para produto")
     start_time_produto = time.time()
     resultProduto = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[1]), t_solve_ivp, x, rtol, atol, indice[2], metodoIntegracao), method=metodoMinimizacao)  
-    report_fit(resultProduto)
+    # report_fit(resultProduto)
+    resultProduto.params.pretty_print()
     print(resultProduto.message)
+    
+    coefcorr_produto = r2(dadoOtimizacao[1], indice[2], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
+    # otim_produto = integracao(metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol).y
+    # r2_produto = 1-sum(np.square(dadoOtimizacao[1]-otim_produto[2]))/sum(np.square(dadoOtimizacao[1]-np.mean(dadoOtimizacao[1])))
+    print(chalk.yellow(coefcorr_produto))
     tempo_produto = (time.time()-start_time_produto)    
      ## execução da função de integração otimizada para produto e plotagem do gráfico:
     print("plotagem chamada para produto")
@@ -169,6 +181,10 @@ def main():
     resultSubstrato = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[0]), t_solve_ivp, x, rtol, atol, indice[0], metodoIntegracao), method=metodoMinimizacao)  
     report_fit(resultSubstrato)
     print(resultSubstrato.message)
+    coefcorr_substrato = r2(dadoOtimizacao[0], indice[0], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
+    print(chalk.yellow(coefcorr_substrato))
+    
+    
     tempo_substrato = (time.time()-start_time_substrato)
     
      # execução da função de integração otimizada para produto e plotagem do gráfico:
