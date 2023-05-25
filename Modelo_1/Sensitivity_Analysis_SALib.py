@@ -30,9 +30,9 @@ def g_SA (t, X0, S_in, mumax_X, K_S, Y_X_S, Y_P_S, k_dec, D):
 
     model_result = scipy.integrate.solve_ivp(model_SA, t, X0, method='LSODA', args=(S_in, mumax_X, K_S, Y_X_S, Y_P_S, k_dec, D))
     S_model, X_model, P_model = model_result.y
-    S_model = np.longdouble(S_model)
-    X_model = np.longdouble(X_model)
-    P_model = np.longdouble(P_model)
+    # S_model = np.longdouble(S_model)
+    # X_model = np.longdouble(X_model)
+    # P_model = np.longdouble(P_model)
     model_result = [S_model, X_model, P_model]
     model_result = pd.DataFrame(model_result).transpose()
     
@@ -45,11 +45,11 @@ plt.plot()
 problem = {
     'num_vars': 5,
     'names': ['mumax_X', 'K_S', 'Y_X_S', 'Y_P_S', 'k_dec'],
-    'bounds': [[0.01, 16],
-               [0.01, 630],
-               [0.01, 0.3],
-               [0.01, 1],
-               [0.01, 0.5]]
+    'bounds': [[0.0001, 16],
+               [0.001, 4],
+               [0.001, 0.3],
+               [0.001, 1.],
+               [0.001, 1.]]
 }
 
 param_values = saltelli.sample(problem, 512, calc_second_order=True, skip_values=1024)
@@ -63,8 +63,10 @@ param_values = pd.DataFrame(param_values)
 
 print(param_values.dtypes)
 print(Y)
-X0 = [42500., 25500., 0]
+X0 = [42.5, 25.5, 0.]
 X0 = np.array(X0)
+
+for 
 # break_list = []
 # print(g_SA([0, 240], [42500., 25500., 0.], 0.37646484375, 5.2501708984375, 29.2236328125, 0.13935546875, 0.54638671875, 0.415771484375, 0.0096337890625))
 # print(X0.shape[0])
@@ -89,28 +91,28 @@ X0 = np.array(X0)
 # print(Y[0, :])
 # print (break_list)
 
-#PAWN analysis
-sample_latin = latin.sample(problem, 8000)
-Y = np.zeros([len(sample_latin), 3])
-print(Y.shape)
+# #PAWN analysis
+# sample_latin = saltelli.sample(problem, 8000)
+# Y = np.zeros([len(sample_latin), 3])
+# print(Y.shape)
 
-print(sample_latin)
-for u, i in enumerate(sample_latin):
-    solve_pawn = g_SA([0, 240], [42500., 25500., 0.], 0., i[0], i[1], i[2], i[3], i[4], 0.)
-    print(solve_pawn.iloc[-1])
-    Y[u][:] = solve_pawn.iloc[-1]
+# print(sample_latin)
+# for u, i in enumerate(sample_latin):
+#     solve_pawn = g_SA([0, 240], [42500., 25500., 0.], 0., i[0], i[1], i[2], i[3], i[4], 0.)
+#     print(solve_pawn.iloc[-1])
+#     Y[u][:] = solve_pawn.iloc[-1]
 
-print(Y)
-print('\n PAWN analysis \n')
+# print(Y)
+# print('\n SOBOL analysis \n')
 
-Si_S_pawn = pawn.analyze(problem, sample_latin, Y[:, 0], print_to_console=True)
-Si_S_pawn.plot()
-plt.show()
-
-#Sobol analysis
-print('\n\n====S_in Sobol output====\n\n')  
-Si_S_in = sobol.analyze(problem, Y[:,0], print_to_console=True)
-
-# plt.plot(x.iloc[:, 3], x.iloc[:, 0])
+# Si_S_pawn = sobol.analyze(problem, sample_latin, Y[:, 0], print_to_console=True)
+# Si_S_pawn.plot()
 # plt.show()
+
+# #Sobol analysis
+# print('\n\n====S_in Sobol output====\n\n')  
+# Si_S_in = sobol.analyze(problem, Y[:,0], print_to_console=True)
+
+# # plt.plot(x.iloc[:, 3], x.iloc[:, 0])
+# # plt.show()
 
