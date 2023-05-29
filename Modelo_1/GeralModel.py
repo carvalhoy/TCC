@@ -99,13 +99,12 @@ def integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
     solve_ivp = scipy.integrate.solve_ivp(model, t_step, x, metodoIntegracao, t_eval=t_solve_ivp, args=[params], rtol=rtol, atol=atol)
     return solve_ivp
 
+    ## P/ indice = 10: 2 parametros.
 def  r2(dado, indice, metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
     dado = np.array(dado)
     otim_model = integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol).y
 
-    if len(dado.shape) == 1:
-        r_square = 1-sum(np.square(dado-otim_model[indice]))/sum(np.square(dado-np.mean(dado)))    
-    else:
+    if indice == 10:
         res_S = dado[0] - otim_model[0]
         S_SSR = sum(np.square(res_S))
         S_SST = sum(np.square(dado[0] - np.mean(dado[0])))
@@ -113,7 +112,9 @@ def  r2(dado, indice, metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, at
         P_SSR = sum(np.square(res_P))
         P_SST = sum(np.square(dado[1] - np.mean(dado[1])))
         
-        r_square = 1 - (S_SSR + P_SSR)/(S_SST + P_SST)
+        r_square = 1 - (S_SSR + P_SSR)/(S_SST + P_SST)  
+    else:
+        r_square = 1-sum(np.square(dado-otim_model[indice]))/sum(np.square(dado-np.mean(dado)))  
     return r_square
 
 def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
@@ -217,7 +218,7 @@ def main():
     resultGeral = minimize(residual2, paras, args=(t_step, np.array(dadoOtimizacao), t_solve_ivp, x, rtol, atol, metodoIntegracao), method=metodoMinimizacao)  # leastsq
     report_fit(resultGeral)
     print(resultGeral.message)
-    coefcorr_geral = r2(dadoOtimizacao, None, metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol)
+    coefcorr_geral = r2(dadoOtimizacao, 10, metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol)
     print(coefcorr_geral)
     tempo_duasvar = (time.time()-start_time_duasvar)
 
