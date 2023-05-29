@@ -32,11 +32,21 @@ def model (t, x, params):
     
      ##definindo a reação:
     mu = mu_max_X*S/(K_S + S) #dia^-1
+    if (D == 0):
+        # print('Operação em batelada')
+        ##definindo balanço de componentes:
+        dS_dt = - (1/Y_X_S)*mu*X
+        dX_dt = (mu-k_dec)*X
+        dP_dt = Y_P_S*((1/Y_X_S)*mu*X)
     
-     ##definindo balanço de componentes:
-    dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X
-    dX_dt = (D)*(-X) + (mu-k_dec)*X
-    dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
+    else:
+        # print('Operação contínua')
+        ##definindo balanço de componentes:
+        dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X
+        dX_dt = (D)*(-X) + (mu-k_dec)*X
+        dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
+        
+        
 
     return [dS_dt, dX_dt, dP_dt]
 
@@ -90,8 +100,20 @@ def integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
     return solve_ivp
 
 def  r2(dado, indice, metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
-    otim_produto = integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol).y
-    r_square = 1-sum(np.square(dado-otim_produto[indice]))/sum(np.square(dado-np.mean(dado)))
+    dado = np.array(dado)
+    otim_model = integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol).y
+
+    if len(dado.shape) == 1:
+        r_square = 1-sum(np.square(dado-otim_model[indice]))/sum(np.square(dado-np.mean(dado)))    
+    else:
+        res_S = dado[0] - otim_model[0]
+        S_SSR = sum(np.square(res_S))
+        S_SST = sum(np.square(dado[0] - np.mean(dado[0])))
+        res_P = dado[1] - otim_model[2]
+        P_SSR = sum(np.square(res_P))
+        P_SST = sum(np.square(dado[1] - np.mean(dado[1])))
+        
+        r_square = 1 - (S_SSR + P_SSR)/(S_SST + P_SST)
     return r_square
 
 def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
@@ -146,14 +168,14 @@ def main():
     paras = Parameters()
     paras.add('S_in', value=0., vary=False)
     paras.add('mumax_X', value=0.005, min=0.001, max=15.8)
-    paras.add('K_S', value=0.8, min=0.01, max=4)
+    paras.add('K_S', value=0.8, min=0.01*0.7, max=0.63*1.3)
     paras.add('Y_X_S', value=0.2, min=0.001, max=1.)
-    paras.add('Y_P_S', value=0.8, min=0.1, max=1.)
+    paras.add('Y_P_S', value=0.8, min=0.01, max=1.)
     paras.add('k_dec', value=0.015, min=0.01, max=1)
     paras.add('D', value=0., vary=False)   
      
      ## definindo método de minimização usado na função .minimize:
-    metodoMinimizacao = 'Nelder-Mead'    
+    metodoMinimizacao = 'leastsq'    
      ## otimização para Substrato (0), Biomassa (1), Produto (2):
     indice = [0, 1, 2]
      ## lista de listas com concentração de Substrato (0) e Produto (1)
@@ -167,8 +189,7 @@ def main():
     print(resultProduto.message)
     
     coefcorr_produto = r2(dadoOtimizacao[1], indice[2], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
-    # otim_produto = integracao(metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol).y
-    # r2_produto = 1-sum(np.square(dadoOtimizacao[1]-otim_produto[2]))/sum(np.square(dadoOtimizacao[1]-np.mean(dadoOtimizacao[1])))
+    
     print(chalk.yellow(coefcorr_produto))
     tempo_produto = (time.time()-start_time_produto)    
      ## execução da função de integração otimizada para produto e plotagem do gráfico:
@@ -196,6 +217,8 @@ def main():
     resultGeral = minimize(residual2, paras, args=(t_step, np.array(dadoOtimizacao), t_solve_ivp, x, rtol, atol, metodoIntegracao), method=metodoMinimizacao)  # leastsq
     report_fit(resultGeral)
     print(resultGeral.message)
+    coefcorr_geral = r2(dadoOtimizacao, None, metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol)
+    print(coefcorr_geral)
     tempo_duasvar = (time.time()-start_time_duasvar)
 
     
