@@ -1,0 +1,89 @@
+************************************************************
+1 - INTRODUÇÃO:
+
+--> Basicamente, para se realizar uma modelage/simulação de um bioprocesso é necessário o entendimento de disciplinas básicas (física, quimica e biologia), de disciplina específicas (bioquimica, reatores, operações unitárias), de informática e programação atrelados ao cálculo e ao cálculo numérico.
+--> Juntando o cálculo numérico com conhecimentos específicos, somos capazes de resolver problemas extremamente complexos e avançados na engenharia.
+
+--> Modelar é, basicamente, escrever matemáticamente o problema que queremos resolver.
+--> A partir da modelagem de um bioprocesso, podemos fzr simulações, antecipar controles de processo e até mesmo a otimização do processo.
+
+--> Principal vanagem: economia de tempo e de recursos!
+
+--> Modelos são representações/interpretações simplificadas da realidade;
+
+--> Simular é utilizar o modelo para fazer predições em condições não testadas, com aplicações inúmeras e multidisciplinates.
+
+***********************************************************
+2 - CONCEITOS:
+
+2.1 Sistema - Em um reator, por exemplo, o reator é o meio, já o sistema é a mistura reacional (não compreende paredes, fase gasosa, etc);
+	- Vizinhanças (ambiente externo ao sistema - TC? TM?) X fronteiras (região teórica que separa o sistema das vizinhanças - espessura);
+	- Sistemas podem ser concentrados/uniformes/homogêneos (propriedades intensivas não variam com o espaço) ou distribuidos/ñ-uniformes/ñ-homogêneos (variação das propriedades com o espaço não pode ser desprezada);
+	- Sistemas podem ser abertos (TM e TC) como reatores CSTR e em batelada alimentada, fechados (TC) como reatores em batelada com controle de temperatura ou isolados (/*)!
+* Nunca, na vida real, teremos um isolamento perfeito!
+
+2.2 - Modelo Matemático: Conjunto de equações que envolvem as propriedades do sistema.
+	- Podem ser classificados quanto:
+	> Comportamento: determinísticos (mesmas entradas geram sempre a mesma saída), estocásticos/probabilistico (não retorna um valor, mas sim uma probabilidade);
+	> Dados: discretos (trabalha com valores inteiros), contínuos (trabalham com pontos flutuantes - decimal);
+	> Tempo: estático (sistema permanente), dinâmicos (sistema transiente);
+	> Equações: fenomenológicas (valem para quase toda situação), empiricas (válidas para certa condição)
+	- Variáveis (propriedades do sistema que variam com o tempo) X parâmetros (propriedades fixas ou específicadas - condições iniciais, constantes de equações, específicações de processo);
+
+
+***********************************************************
+3 - PASSOS PARA MODELAGEM DE UM PROCESSO:
+
+3.1 - Quais as considerações?
+	- Reator isotérmico (ñ varia T);
+
+3.2 - Desenvolvimento do modelo matemático (equacionamento);
+	- Crescimento de M.O;
+	- Crescimento de produto;
+	- Consumo de Substrato;
+
+3.2.2 - Definição de parâmetros (geralmente por meio de experimentos); 
+
+3.3 - Resolução do modelo matemático (Cálculo Numérico p/ EDO);
+
+3.4 - Ultilizar o modelo para fazer simulações;
+
+3.5 - Testagem do modelo:
+	- Realizar experimentos nas mesmas condições e comparar com o modelo;
+	- As discrepâncias entre as simulações e dados experimentais são pequenas o bastante (isso é relativo -- qual o erro?) ? 
+		SIM = Show, é isso!
+		NÃO = o modelo não descreve bem os dados experimentais --> devemos eliminir ou reduzir simplificações/considerações do modelo --> geralmente uma consideração removida vai impactar em outras considerações (devemos revisar) e no modelo matemático!
+
+
+
+PRÁTICA 1: Modelagem de biorreator batelada simples com M.O consumindo substrato (S), gerando biomassa (B) e produto (P): 
+	- Sistema: mistura de S + B + P;
+	- Objetivo: prever as concentrações no tempo de B, S e P;
+	-  Simulação: a partir do modelo ajustado, é possível testar computacionalmente diferentes concentrações de componentes, e ver como isso afetaria os demais.
+
+--> Considerações Simples (3.1):
+- Agitação perfeita (parâmetros concentrados);
+- Isotérmico e isolado;
+- Geração de produto associado ao crescimento celular*;
+- Consumo de substrato associado ao crescimento celular;
+- Crescimento celular descrito por equação de Monod**;
+
+* reações que decorrem de enzíma secretada por M.O não são unicamente associadas ao crescimento célular (CES);
+** umáx e Km -> parâmetros;
+
+--> Equacionamento (3.2): 
+- Equação para variação da biomassa: considerando substrato usado únicamente para geração de produto. Na prática, tmb é usado para manutenção celular!
+- Equação para variação de produto e substrato são proporcionais a (1), sendo que S reduz e B aumenta na taxa de uma constante * o aumento de B;
+
+--> Parâmetros do modelo (3.2.2):
+- Condições iniciais: Bo, So, Po;
+- Constantes de Monod: Umax, Km;
+- Constantes de proporcionalidade: Ys, Yp;
+
+OBS: Umax, Km, Yb e Ys geralmente determinados a partir de dados experimentais ou da literatura;
+P/ o exemplo usou-se dados de um artigo para trichoderma reesei -> Umax = 0.7, Km = 60.01, Yp = 4; Ys = 0.38;
+
+--> Resolução do modelo (3.3):
+- Sistema de EDOs: Discretização (método das diferenças finitas) -> transforma equações discretas em contínuas:
+dy/dt = f(x) -> Δy/Δt = f(x) -> (y2 - y1)/Δt = f(x) -> y2 = y1 + f(x)Δt --> Ym+1 = Ym + f(x) Δt; 
+- Implementação no Python: 
