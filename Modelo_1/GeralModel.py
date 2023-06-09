@@ -1,14 +1,19 @@
 # importanto bibliotecas:
-import numpy as np
-import scipy.integrate
-import scipy.optimize
-import matplotlib.pyplot as plt
-import pandas as pd
-from datetime import datetime as dt
-from lmfit import minimize, Parameters, Parameter, report_fit
-from simple_chalk import chalk
+import pandas as pd # 2.0.1
+import numpy as np # 1.24.3
+import scipy.integrate, scipy.optimize # 1.10.1
+import matplotlib.pyplot as plt # 3.7.1
+from datetime import datetime as dt # 5.1
+from lmfit import minimize, Parameters, Parameter, report_fit # 1.2.1
+from simple_chalk import chalk # 0.1.0
 
-
+##ajustar dados utilizados na otimização:
+def ajustarXlsx(caminho:str, parametrosDadosXlsx:list[int]):
+    [tempoInicial, tempoFinal, totalPontos, digitosDecimais] = parametrosDadosXlsx
+    dados:pd.DataFrame = pd.read_excel(caminho, header=None, names=['tempo', 'concentração'], decimal=',')
+    dados['tempo'] = np.linspace(tempoInicial, tempoFinal, totalPontos)
+    dados['concentração'] = round(dados['concentração']/1000, digitosDecimais)
+    return dados
 
 def model (t, x, params):
 
@@ -38,14 +43,6 @@ def model (t, x, params):
     dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
 
     return [dS_dt, dX_dt, dP_dt]
-
- ##ajustar dados utilizados na otimização:
-def ajustarXlsx(caminho, parametrosDadosXlsx):
-    [tempoInicial, tempoFinal, totalPontos, digitosDecimais] = parametrosDadosXlsx
-    dados = pd.read_excel(caminho, header=None, names=['tempo', 'concentração'], decimal=',')
-    dados['tempo'] = np.linspace(tempoInicial, tempoFinal, totalPontos)
-    dados['concentração'] = round(dados['concentração']/1000, digitosDecimais)
-    return dados
 
 def residual(paras, t_step, data, t_solve_ivp, x, rtol, atol, indice, metodoIntegracao):
      ## resolução do modelo: 
@@ -104,28 +101,29 @@ def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao):
     plt.draw()
         
 def main():
-    parametrosDadosXlsx = [0, 240, 25, 3] #tempo inicial, tempo final, número de pontos, algarismos significativos
+    parametrosDadosXlsx:list[int] = [0, 240, 25, 3] #tempo inicial, tempo final, número de pontos, algarismos significativos
     
-     ## importando dados experimentais do excel:
-     ### checar caminho do arquivo###
-    dados_P = ajustarXlsx("./xlsx1/produto.xlsx", parametrosDadosXlsx)
-    dados_S = ajustarXlsx("./xlsx1/substrato.xlsx", parametrosDadosXlsx)
-     ## condições iniciais das variáveis dos balanços: substrato, biomassa, produto;
-    x = [42.5, 25.2, 0.0]
-     ## intervalo de integração:
-    t_step = [0, 240]
-     ## dados no tempo a serem retornados pela função integrate.solve_ivp:
-    t_solve_ivp = dados_P['tempo']
-     ## lista de métodos de integração da função .solve_ivp:
-    metodosIntegracao = ['RK45', 'RK23', 'DOP853', 'Radau', 'BDF', 'LSODA']
-     ## definindo método de integração da função .solve_ivp:
-    metodoIntegracao = metodosIntegracao[0]
-     ## definindo as tolerâncias relativa e absoluta usada na função .solve_ivp:
-    rtol = 3e-14
-    atol = 1e-18    
+    ## importando dados experimentais do excel:
+        ### checar caminho do arquivo ###
+    dados_P:pd.DataFrame = ajustarXlsx("./xlsx1/produto.xlsx", parametrosDadosXlsx)
+    dados_S:pd.DataFrame = ajustarXlsx("./xlsx1/substrato.xlsx", parametrosDadosXlsx)
     
-     ## definindo parâmetros para Curve Fitting:
-    paras = Parameters()
+    ## condições iniciais das variáveis dos balanços: substrato, biomassa, produto;
+    x:list[float] = [42.5, 25.2, 0.0]
+    ## intervalo de integração:
+    t_step:list[int] = [0, 240]
+    ## dados no tempo a serem retornados pela função integrate.solve_ivp:
+    t_solve_ivp:pd.Series = dados_P['tempo']
+    ## lista de métodos de integração da função .solve_ivp:
+    metodosIntegracao:list[str] = ['RK45', 'RK23', 'DOP853', 'Radau', 'BDF', 'LSODA']
+    ## definindo método de integração da função .solve_ivp:
+    metodoIntegracao:str = metodosIntegracao[0]
+    ## definindo as tolerâncias relativa e absoluta usada na função .solve_ivp:
+    rtol:float = 3e-14
+    atol:float = 1e-18    
+    
+    ## definindo parâmetros para Curve Fitting:
+    paras:Parameters = Parameters()
     paras.add('S_in', value=0., vary=False)
     paras.add('mumax_X', value=0.002, min=0.0001, max=0.015)
     paras.add('K_S', value=3.5, min=0.1, max=4)
@@ -134,36 +132,38 @@ def main():
     paras.add('k_dec', value=0.01, min=0.001, max=1)
     paras.add('D', value=0., vary=False)   
      
-     ## definindo método de minimização usado na função .minimize:
-    metodoMinimizacao = 'Nelder-Mead'    
-     ## otimização para Substrato (0), Biomassa (1), Produto (2):
-    indice = [0, 1, 2]
-     ## lista de listas com concentração de Substrato (0) e Produto (1)
-    dadoOtimizacao = [dados_S['concentração'], dados_P['concentração']]
+    ## definindo método de minimização usado na função .minimize:
+    metodoMinimizacao:str = 'Nelder-Mead'    
+    ## otimização para Substrato (0), Biomassa (1), Produto (2):
+    indice:list[int] = [0, 1, 2]
+    ## lista de listas com concentração de Substrato (0) e Produto (1)
+    dadoOtimizacao:list[pd.Series] = [dados_S['concentração'], dados_P['concentração']]
     
-    print("minimize chamada para produto")
+    ## PRODUTO:
+    print(chalk.darkGreen("minimize chamada para produto"))
     resultProduto = minimize(residual, paras, args=(t_step, dadoOtimizacao[1], t_solve_ivp, x, rtol, atol, indice[2], metodoIntegracao), method=metodoMinimizacao)  
     report_fit(resultProduto)
-    
-     ## execução da função de integração otimizada para produto e plotagem do gráfico:
-    print("plotagem chamada para produto")
+    ## execução da função de integração otimizada para produto e plotagem do gráfico:
+    print(chalk.darkGreen("plotagem chamada para produto"))
     plotagem(integracao(metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao)
     
-    print(chalk.red("minimize chamada para substrato"))
+    # SUBSTRATO:
+    print(chalk.darkGreen("minimize chamada para substrato"))
     resultSubstrato = minimize(residual, paras, args=(t_step, dadoOtimizacao[0], t_solve_ivp, x, rtol, atol, indice[0], metodoIntegracao), method=metodoMinimizacao)  
     report_fit(resultSubstrato)
-    
-     ## execução da função de integração otimizada para produto e plotagem do gráfico:
-    print(chalk.green("plotagem chamada para Substrato"))
+    ## execução da função de integração otimizada para substrato e plotagem do gráfico:
+    print(chalk.darkGreen("plotagem chamada para Substrato"))
     plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao)
     
-    print(chalk.blue("minimize chamada para duas variáveis"))
+    # PRODUTO E SUBSTRATO:
+    print(chalk.darkGreen("minimize chamada para duas variáveis"))
     resultGeral = minimize(residual2, paras, args=(t_step, dadoOtimizacao, t_solve_ivp, x, rtol, atol, metodoIntegracao), method=metodoMinimizacao)  # leastsq
     report_fit(resultGeral)
-    
-     ## execução da função de integração e plotagem do gráfico: 
-    print(chalk.green("plotagem chamada para duas variáveis"))
+    ## execução da função de integração e plotagem do gráfico: 
+    print(chalk.darkGreen("plotagem chamada para duas variáveis"))
     plotagem(integracao(metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao)
+    
+    # Mostra dos gráficos:
     plt.show()
     
     

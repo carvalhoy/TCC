@@ -14,6 +14,7 @@
 --> Simular é utilizar o modelo para fazer predições em condições não testadas, com aplicações inúmeras e multidisciplinates.
 
 ***********************************************************
+
 2 - CONCEITOS:
 
 2.1 Sistema - Em um reator, por exemplo, o reator é o meio, já o sistema é a mistura reacional (não compreende paredes, fase gasosa, etc);
