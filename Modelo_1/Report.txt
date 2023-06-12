@@ -1,0 +1,93 @@
+
+
+************************** Relatorio 2023-06-10 20:08:02.559607: **************************
+
+************* Report Produto************* 
+
+[[Fit Statistics]]
+    # fitting method   = leastsq
+    # function evals   = 12000
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.00462287
+    reduced chi-square = 2.3114e-04
+    Akaike info crit   = -204.890373
+    Bayesian info crit = -198.795993
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.00502569 (init = 0.005)
+    K_S:      0.00700023 (init = 0.8)
+    Y_X_S:    0.18695148 (init = 0.2)
+    Y_P_S:    0.98920121 (init = 0.8)
+    k_dec:    0.02335147 (init = 0.015)
+    D:        0 (fixed)
+
+************* ReportSubstrato ************* 
+
+[[Fit Statistics]]
+    # fitting method   = leastsq
+    # function evals   = 220
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.03413082
+    reduced chi-square = 0.00170654
+    Akaike info crit   = -154.910761
+    Bayesian info crit = -148.816382
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.00544881 +/- 18.1002793 (332187.81%) (init = 0.005)
+    K_S:      0.00700000 +/- 1.03332210 (14761.74%) (init = 0.8)
+    Y_X_S:    0.15808433 +/- 525.289893 (332284.61%) (init = 0.2)
+    Y_P_S:    0.01176175 +/- 5.2068e+12 (44269340703055384.00%) (init = 0.8)
+    k_dec:    0.02712398 +/- 18.1286653 (66836.31%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +1.0000
+    C(mumax_X, k_dec) = +1.0000
+    C(Y_X_S, k_dec)   = +1.0000
+    C(K_S, k_dec)     = +0.9393
+    C(K_S, Y_X_S)     = +0.9392
+    C(mumax_X, K_S)   = +0.9392
+    C(K_S, Y_P_S)     = -0.1952
+
+************* Report Geral ************* 
+
+[[Fit Statistics]]
+    # fitting method   = leastsq
+    # function evals   = 143
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 2.7521e-04
+    reduced chi-square = 1.3761e-05
+    Akaike info crit   = -275.421102
+    Bayesian info crit = -269.326723
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.01047298 +/- 0.00763883 (72.94%) (init = 0.005)
+    K_S:      0.00700000 +/- 1.40698248 (20099.75%) (init = 0.8)
+    Y_X_S:    0.30810132 +/- 0.23380728 (75.89%) (init = 0.2)
+    Y_P_S:    0.87662743 +/- 0.05139972 (5.86%) (init = 0.8)
+    k_dec:    0.03167316 +/- 0.01238583 (39.11%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9976
+    C(mumax_X, k_dec) = +0.9091
+    C(K_S, k_dec)     = -0.9042
+    C(Y_X_S, k_dec)   = +0.8891
+    C(mumax_X, K_S)   = -0.6657
+    C(K_S, Y_X_S)     = -0.6422
+    C(Y_X_S, Y_P_S)   = +0.4430
+    C(mumax_X, Y_P_S) = +0.4374
+    C(Y_P_S, k_dec)   = +0.3787
+    C(K_S, Y_P_S)     = -0.1668
+
+************* Tempos de execucao ************* 
+Produto: 90.52826619148254
+Substrato: 2.3035502433776855
+Duas variaveis: 1.2317993640899658
+
+************* R-square ************* 
+Produto: 0.9973880074327931
+Substrato: 0.8317155486057777
+Duas variaveis: 0.9854315809088201
