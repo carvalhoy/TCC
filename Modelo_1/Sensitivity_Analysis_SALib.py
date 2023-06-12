@@ -19,7 +19,7 @@ def model_SA (t, y, S_in, mumax_X, K_S, Y_X_S, Y_P_S, k_dec, D):
     mu = mp.mpf(mumax_X)*mp.mpf(S)/mp.mpf((K_S + S)) #dia^-1
         
 
-    dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X
+    dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X 
     dX_dt = (D)*(-X) + (mu-k_dec)*X
     dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
 
@@ -33,14 +33,14 @@ def g_SA (t, X0, S_in, mumax_X, K_S, Y_X_S, Y_P_S, k_dec, D):
     # S_model = np.longdouble(S_model)
     # X_model = np.longdouble(X_model)
     # P_model = np.longdouble(P_model)
-    model_result = [S_model, X_model, P_model]
-    model_result = pd.DataFrame(model_result).transpose()
+    # model_result = [S_model, X_model, P_model]
+    # model_result = pd.DataFrame(model_result).transpose()
     
-    return model_result
+    return model_result.y
 
 x = g_SA([0, 240], [42500., 25500., 0], 100, 1e-4, 9593235, 1.1355e-5, 12607.5, 0.00597, 0)
 print(x)
-print(x.iloc[-1])
+print(x[:, -1])
 plt.plot()
 problem = {
     'num_vars': 5,
@@ -66,7 +66,8 @@ print(Y)
 X0 = [42.5, 25.5, 0.]
 X0 = np.array(X0)
 
-for 
+# for u, i in enumerate(param_values):
+#     res = g_SA([0, 240], X0, 0, param_values.iloc[])
 # break_list = []
 # print(g_SA([0, 240], [42500., 25500., 0.], 0.37646484375, 5.2501708984375, 29.2236328125, 0.13935546875, 0.54638671875, 0.415771484375, 0.0096337890625))
 # print(X0.shape[0])
