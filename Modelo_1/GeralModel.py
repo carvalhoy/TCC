@@ -187,7 +187,7 @@ def main():
     
     ########### PRODUTO ###########
     print(chalk.green("\nminimize chamada para produto\n\n"))
-    start_time_produto = time.time()
+    start_time_produto: float = time.time()
     resultProduto = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[1]), t_solve_ivp, x, rtol, atol, indice[2], metodoIntegracao), method=metodoMinimizacao)  
     # report_fit(resultProduto)
     resultProduto.params.pretty_print()
