@@ -18,7 +18,7 @@ def ajustarXlsx(caminho:str, parametrosDadosXlsx: list[int]):
     return dados
 
 def model (t, x, params):
-
+    
     S = x[0] #g_DQO_S/m^3
     X = x[1] #g_DQO_X/m^3
     P = x[2] #g_DQO_P/m^3
@@ -143,7 +143,7 @@ def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao, 
     
 def writeReport(resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho):
     report = open(caminho, 'a')
-    report.write(f'\n\n************************** Relatorio {dt.now()}: **************************\n\n************* Report Produto************* \n\n{fit_report(resultProduto)}\n\n************* ReportSubstrato ************* \n\n{fit_report(resultSubstrato)}\n\n************* Report Geral ************* \n\n{fit_report(resultGeral)}')
+    report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* PRODUTO ************* \n\n{fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{fit_report(resultGeral)}')
     report.write(f'\n\n************* Tempos de execucao ************* \nProduto: {tempo_produto}\nSubstrato: {tempo_substrato}\nDuas variaveis: {tempo_duasvar}')
     report.write(f'\n\n************* R-square ************* \nProduto: {coefcorr_produto}\nSubstrato: {coefcorr_substrato}\nDuas variaveis: {coefcorr_geral}')
     report.close()
@@ -185,18 +185,19 @@ def main():
     ## lista de listas com concentração de Substrato (0) e Produto (1)
     dadoOtimizacao:list[pd.Series] = [dados_S['concentração'], dados_P['concentração']]
     
-    ########### PRODUTO ###########
-    print(chalk.green("\nminimize chamada para produto\n\n"))
+    # ########### PRODUTO ###########
+    print(chalk.green("\nminimize chamada para produto"))
     start_time_produto: float = time.time()
     resultProduto = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[1]), t_solve_ivp, x, rtol, atol, indice[2], metodoIntegracao), method=metodoMinimizacao)  
     # report_fit(resultProduto)
-    resultProduto.params.pretty_print()
-    print(resultProduto.message)
+    resultProduto.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
+    print(chalk.yellow(resultProduto.message))
 
     coefcorr_produto = r2(dadoOtimizacao[1], indice[2], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_produto}\n'))
+    print(chalk.yellow(f'R2 = {coefcorr_produto}'))
     
     tempo_produto = (time.time()-start_time_produto) 
+    print(chalk.yellow(f'Tempo exec: = {tempo_produto}'))
        
     ## execução da função de integração otimizada para produto e plotagem do gráfico:
     print(chalk.blue("plotagem chamada para produto"))
@@ -204,33 +205,34 @@ def main():
     print(chalk.blue("OK\n"))
     
     ########### SUBSTRATO ########### 
-    print(chalk.green("minimize chamada para substrato\n\n"))
+    print(chalk.green("\nminimize chamada para substrato"))
     start_time_substrato = time.time()
     resultSubstrato = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[0]), t_solve_ivp, x, rtol, atol, indice[0], metodoIntegracao), method=metodoMinimizacao)  
-    resultSubstrato.params.pretty_print()
-    print(resultSubstrato.message)
+    resultSubstrato.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
+    print(chalk.yellow(resultSubstrato.message))
     
-    coefcorr_substrato = r2(dadoOtimizacao[0], indice[0], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_substrato}\n'))
+    coefcorr_substrato = r2(dadoOtimizacao[0], indice[0], metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol)
+    print(chalk.yellow(f'R2 = {coefcorr_substrato}'))
     
     tempo_substrato = (time.time()-start_time_substrato)
-    
+    print(chalk.yellow(f'Tempo exec: = {tempo_substrato}'))
     # execução da função de integração otimizada para produto e plotagem do gráfico:
     print(chalk.blue("plotagem chamada para Substrato"))
     plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Substrato')
     print(chalk.blue("OK\n"))
     
     ###########  PRODUTO E SUBSTRATO ########### 
-    print(chalk.green("\nminimize chamada para duas variáveis\n\n"))
+    print(chalk.green("\nminimize chamada para duas variáveis"))
     start_time_duasvar = time.time()
     resultGeral = minimize(residual2, paras, args=(t_step, np.array(dadoOtimizacao), t_solve_ivp, x, rtol, atol, metodoIntegracao), method=metodoMinimizacao)  # leastsq
-    resultGeral.params.pretty_print()
-    print(resultGeral.message)
+    resultGeral.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
+    print(chalk.yellow(resultGeral.message))
     coefcorr_geral = r2(dadoOtimizacao, 10, metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_geral}\n'))
+    print(chalk.yellow(f'R2 = {coefcorr_geral}'))
     tempo_duasvar = (time.time()-start_time_duasvar)
+    print(chalk.yellow(f'Tempo exec: = {tempo_duasvar}'))
 
-    ## execução da função de integração e plotagem do gráfico: 
+    # execução da função de integração e plotagem do gráfico: 
     print(chalk.blue("plotagem chamada para duas variáveis"))
     plotagem(integracao(metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'P e S')
     print(chalk.blue("OK\n"))
@@ -241,7 +243,7 @@ def main():
     writeReport(resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
     print(chalk.blue('OK'))
 
-    plt.show()
+    # plt.show()
     
     
 main()
