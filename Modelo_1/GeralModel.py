@@ -4,7 +4,8 @@ import scipy.integrate, scipy.optimize # 1.10.1
 import matplotlib.pyplot as plt # 3.7.1
 import pandas as pd # 2.0.1
 from datetime import datetime as dt # 5.1
-from lmfit import minimize, Parameters, Parameter, report_fit, fit_report # 1.2.1
+import lmfit as lm
+#from lmfit import minimize, Parameters, report_fit, fit_report # 1.2.1
 from simple_chalk import chalk # 0.1.0
 import time  
 
@@ -17,7 +18,7 @@ def ajustarXlsx(caminho:str, parametrosDadosXlsx: list[int]):
     dados['concentração'] = round(dados['concentração']/1000, digitosDecimais)
     return dados
 
-def model (t, x, params):
+def model (t, x, params:lm.Parameters):
     
     S = x[0] #g_DQO_S/m^3
     X = x[1] #g_DQO_X/m^3
@@ -56,12 +57,12 @@ def model (t, x, params):
 
     return [dS_dt, dX_dt, dP_dt]
 
-def residual(paras, t_step, data, t_solve_ivp, x, rtol, atol, indice, metodoIntegracao):
+def residual(paras:lm.Parameter, t_step:list[int], data:np.ndarray, t_solve_ivp:pd.Series, x:list[float], rtol:float, atol:float, indice:int, metodoIntegracao:str):
      ## resolução do modelo: 
     model = integracao(metodoIntegracao, t_step, paras, t_solve_ivp, x, rtol, atol)
      ## indexação direta com numpy ndarray
-    model = model.y
-    modelVariaveldoModelo = model[indice]
+    model:np.ndarray = model.y
+    modelVariaveldoModelo:np.ndarray = model[indice]
     #  ## conversão de matriz numpy em dataframe pd:
     # model = pd.DataFrame(model.y).transpose()
     #  ## definição do variável otimizada com indexação .iloc:
@@ -72,11 +73,11 @@ def residual(paras, t_step, data, t_solve_ivp, x, rtol, atol, indice, metodoInte
     # print(f'o erro é {error}')
     return error
 
-def residual2(paras, t_step, data, t_solve_ivp, x, rtol, atol, metodoIntegracao):
+def residual2(paras:lm.Parameter, t_step:list[int], data:np.ndarray, t_solve_ivp:pd.Series, x:list[float], rtol:float, atol:float, metodoIntegracao:str):
      ## resolução do modelo
     model = integracao(metodoIntegracao, t_step, paras, t_solve_ivp, x, rtol, atol)
      ## indexação com numpy ndarray:
-    model = model.y
+    model:np.ndarray = model.y
      ## conversão de matriz numpy em dataframe pd:
     # model = pd.DataFrame(model.y).transpose()
      ## definição da lista de resutados do modelo com indexação .iloc:
@@ -92,13 +93,13 @@ def residual2(paras, t_step, data, t_solve_ivp, x, rtol, atol, metodoIntegracao)
     error = (erro_P + erro_S)
     return error
 
-def integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
+def integracao(metodoIntegracao:str, t_step:list[int], params:lm.Parameters, t_solve_ivp:pd.Series, x:list[float], rtol:float, atol:float):
      ## integração do modelo com função .solve_ivp:
-    solve_ivp = scipy.integrate.solve_ivp(model, t_step, x, metodoIntegracao, t_eval=t_solve_ivp, args=[params], rtol=rtol, atol=atol)
+    solve_ivp:object = scipy.integrate.solve_ivp(model, t_step, x, metodoIntegracao, t_eval=t_solve_ivp, args=[params], rtol=rtol, atol=atol)
     return solve_ivp
 
     ## P/ indice = 10: 2 parametros.
-def  r2(dado, indice, metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol):
+def  r2(dado, indice:int, metodoIntegracao:str, t_step:list[int], params:lm.Parameters, t_solve_ivp:pd.Series, x:list[float], rtol:float, atol:float):
     dado = np.array(dado)
     otim_model = integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol).y
 
@@ -115,7 +116,7 @@ def  r2(dado, indice, metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, at
         r_square = 1-sum(np.square(dado-otim_model[indice]))/sum(np.square(dado-np.mean(dado)))  
     return r_square
 
-def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao, parametroOtimizado):
+def plotagem(solve_ivp:object, dados_P:pd.DataFrame, dados_S:pd.DataFrame, metodo_integracao:str, metodo_otimizacao:str, parametroOtimizado:lm.Parameters):
      ## abrindo a tupla retornada em três variáveis:
     S_solve_ivp, X_solve_ivp, P_solve_ivp = solve_ivp.y    
      ## definindo título da figura:
@@ -141,19 +142,19 @@ def plotagem(solve_ivp, dados_P, dados_S, metodo_integracao, metodo_otimizacao, 
      ## segurar a exibição das figuras até o final de todos os ajustes:
     plt.draw()
     
-def writeReport(resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho):
+def writeReport(resultProduto:object, resultSubstrato:object, resultGeral:object, tempo_produto:float, tempo_substrato:float, tempo_duasvar:float, coefcorr_produto:float, coefcorr_substrato:float, coefcorr_geral:float, caminho:str):
     report = open(caminho, 'a')
-    report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* PRODUTO ************* \n\n{fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{fit_report(resultGeral)}')
-    report.write(f'\n\n************* Tempos de execucao ************* \nProduto: {tempo_produto}\nSubstrato: {tempo_substrato}\nDuas variaveis: {tempo_duasvar}')
-    report.write(f'\n\n************* R-square ************* \nProduto: {coefcorr_produto}\nSubstrato: {coefcorr_substrato}\nDuas variaveis: {coefcorr_geral}')
+    report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* PRODUTO ************* \n\n{lm.fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{lm.fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{lm.fit_report(resultGeral)}')
+    report.write(f'\n\n************* Tempos de execucao ************* \nProduto: {tempo_produto:.2f} s\nSubstrato: {tempo_substrato:.2f} s\nDuas variaveis: {tempo_duasvar:.2f} s')
+    report.write(f'\n\n************* R-square ************* \nProduto: {coefcorr_produto:.4f}\nSubstrato: {coefcorr_substrato:.4f}\nDuas variaveis: {coefcorr_geral:.4f}')
     report.close()
 
 def main():
     parametrosDadosXlsx:list[int] = [0, 240, 25, 3] #tempo inicial, tempo final, número de pontos, algarismos significativos
     ## importando dados experimentais do excel:
      ### checar caminho do arquivo###
-    dados_P:pd.DataFrame = ajustarXlsx("./xlsx1/produto.xlsx", parametrosDadosXlsx)
-    dados_S:pd.DataFrame = ajustarXlsx("./xlsx1/substrato.xlsx", parametrosDadosXlsx)
+    dados_P = ajustarXlsx("./xlsx1/produto.xlsx", parametrosDadosXlsx)
+    dados_S = ajustarXlsx("./xlsx1/substrato.xlsx", parametrosDadosXlsx)
     ## condições iniciais das variáveis dos balanços: substrato, biomassa, produto;
     x:list[float] = [42.5, 25.2, 0.0]
     ## intervalo de integração:
@@ -169,7 +170,7 @@ def main():
     atol:float = 1e-18    
     
     ## definindo parâmetros para Curve Fitting:
-    paras = Parameters()
+    paras = lm.Parameters()
     paras.add('S_in', value=0., vary=False)
     paras.add('mumax_X', value=0.005, min=0.001, max=15.8)
     paras.add('K_S', value=0.8, min=0.01*0.7, max=0.63*1.3)
@@ -179,7 +180,7 @@ def main():
     paras.add('D', value=0., vary=False)   
      
     ## definindo método de minimização usado na função .minimize:
-    metodoMinimizacao:str = 'leastsq'    
+    metodoMinimizacao:str = 'Nelder-Mead'    
     ## otimização para Substrato (0), Biomassa (1), Produto (2):
     indice:list[int] = [0, 1, 2]
     ## lista de listas com concentração de Substrato (0) e Produto (1)
@@ -188,16 +189,16 @@ def main():
     # ########### PRODUTO ###########
     print(chalk.green("\nminimize chamada para produto"))
     start_time_produto: float = time.time()
-    resultProduto = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[1]), t_solve_ivp, x, rtol, atol, indice[2], metodoIntegracao), method=metodoMinimizacao)  
+    resultProduto = lm.minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[1]), t_solve_ivp, x, rtol, atol, indice[2], metodoIntegracao), method=metodoMinimizacao)  
     # report_fit(resultProduto)
     resultProduto.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
     print(chalk.yellow(resultProduto.message))
 
-    coefcorr_produto = r2(dadoOtimizacao[1], indice[2], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_produto}'))
+    coefcorr_produto:float = r2(dadoOtimizacao[1], indice[2], metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol)
+    print(chalk.yellow(f'R2 = {coefcorr_produto:.4f}'))
     
-    tempo_produto = (time.time()-start_time_produto) 
-    print(chalk.yellow(f'Tempo exec: = {tempo_produto}'))
+    tempo_produto:float = (time.time()-start_time_produto) 
+    print(chalk.yellow(f'Tempo exec: = {tempo_produto:.2f} s'))
        
     ## execução da função de integração otimizada para produto e plotagem do gráfico:
     print(chalk.blue("plotagem chamada para produto"))
@@ -207,15 +208,15 @@ def main():
     ########### SUBSTRATO ########### 
     print(chalk.green("\nminimize chamada para substrato"))
     start_time_substrato = time.time()
-    resultSubstrato = minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[0]), t_solve_ivp, x, rtol, atol, indice[0], metodoIntegracao), method=metodoMinimizacao)  
+    resultSubstrato = lm.minimize(residual, paras, args=(t_step, np.array(dadoOtimizacao[0]), t_solve_ivp, x, rtol, atol, indice[0], metodoIntegracao), method=metodoMinimizacao)  
     resultSubstrato.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
     print(chalk.yellow(resultSubstrato.message))
     
     coefcorr_substrato = r2(dadoOtimizacao[0], indice[0], metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_substrato}'))
+    print(chalk.yellow(f'R2 = {coefcorr_substrato:.4f}'))
     
     tempo_substrato = (time.time()-start_time_substrato)
-    print(chalk.yellow(f'Tempo exec: = {tempo_substrato}'))
+    print(chalk.yellow(f'Tempo exec: = {tempo_substrato:.2f} s'))
     # execução da função de integração otimizada para produto e plotagem do gráfico:
     print(chalk.blue("plotagem chamada para Substrato"))
     plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Substrato')
@@ -224,13 +225,13 @@ def main():
     ###########  PRODUTO E SUBSTRATO ########### 
     print(chalk.green("\nminimize chamada para duas variáveis"))
     start_time_duasvar = time.time()
-    resultGeral = minimize(residual2, paras, args=(t_step, np.array(dadoOtimizacao), t_solve_ivp, x, rtol, atol, metodoIntegracao), method=metodoMinimizacao)  # leastsq
+    resultGeral = lm.minimize(residual2, paras, args=(t_step, np.array(dadoOtimizacao), t_solve_ivp, x, rtol, atol, metodoIntegracao), method=metodoMinimizacao)  # leastsq
     resultGeral.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
     print(chalk.yellow(resultGeral.message))
     coefcorr_geral = r2(dadoOtimizacao, 10, metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_geral}'))
+    print(chalk.yellow(f'R2 = {coefcorr_geral:.4f}'))
     tempo_duasvar = (time.time()-start_time_duasvar)
-    print(chalk.yellow(f'Tempo exec: = {tempo_duasvar}'))
+    print(chalk.yellow(f'Tempo exec: = {tempo_duasvar:.2f} s'))
 
     # execução da função de integração e plotagem do gráfico: 
     print(chalk.blue("plotagem chamada para duas variáveis"))
@@ -243,7 +244,7 @@ def main():
     writeReport(resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
     print(chalk.blue('OK'))
 
-    # plt.show()
+    plt.show()
     
     
 main()
