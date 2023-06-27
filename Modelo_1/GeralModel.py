@@ -210,9 +210,6 @@ def main():
     paras.add('D', value=0., vary=False)   
     
     ranges: str = paras.pretty_repr(oneline=False)
-    print(ranges)
-    ranges2 = paras.pretty_repr(oneline=True)
-    print(ranges)
     ## definindo método de minimização usado na função .minimize:
     metodoMinimizacao:str = 'Nelder-Mead'    
     ## otimização para Substrato (0), Biomassa (1), Produto (2):
