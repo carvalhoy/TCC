@@ -102,7 +102,7 @@ def integracao(metodoIntegracao:str, t_step:list[int], params:lm.Parameters, t_s
 def  r2(dado, indice:int, metodoIntegracao:str, t_step:list[int], params:lm.Parameters, t_solve_ivp:pd.Series, x:list[float], rtol:float, atol:float):
     dado = np.array(dado)
     otim_model = integracao(metodoIntegracao, t_step, params, t_solve_ivp, x, rtol, atol).y
-
+    r_square: list[float] | float
     if indice == 10:
         res_S = dado[0] - otim_model[0]
         S_SSR = sum(np.square(res_S))
@@ -110,8 +110,8 @@ def  r2(dado, indice:int, metodoIntegracao:str, t_step:list[int], params:lm.Para
         res_P = dado[1] - otim_model[2]
         P_SSR = sum(np.square(res_P))
         P_SST = sum(np.square(dado[1] - np.mean(dado[1])))
-        
-        r_square = 1 - (S_SSR + P_SSR)/(S_SST + P_SST)  
+        r_square = [(1 - (S_SSR/S_SST)), (1 - (P_SSR/P_SST))]
+        # r_square = 1 - (S_SSR + P_SSR)/(S_SST + P_SST)  
     else:
         r_square = 1-sum(np.square(dado-otim_model[indice]))/sum(np.square(dado-np.mean(dado)))  
     return r_square
@@ -142,11 +142,11 @@ def plotagem(solve_ivp:object, dados_P:pd.DataFrame, dados_S:pd.DataFrame, metod
      ## segurar a exibição das figuras até o final de todos os ajustes:
     plt.draw()
     
-def writeReport(resultProduto:object, resultSubstrato:object, resultGeral:object, tempo_produto:float, tempo_substrato:float, tempo_duasvar:float, coefcorr_produto:float, coefcorr_substrato:float, coefcorr_geral:float, caminho:str):
+def writeReport(ranges:str, resultProduto:object, resultSubstrato:object, resultGeral:object, tempo_produto:float, tempo_substrato:float, tempo_duasvar:float, coefcorr_produto:float, coefcorr_substrato:float, coefcorr_geral:list[float], caminho:str):
     report = open(caminho, 'a')
-    report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* PRODUTO ************* \n\n{lm.fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{lm.fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{lm.fit_report(resultGeral)}')
+    report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* ESPACO PARAMETRICO *************\n\n{ranges}\n\n************* PRODUTO *************\n\n{lm.fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{lm.fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{lm.fit_report(resultGeral)}')
     report.write(f'\n\n************* Tempos de execucao ************* \nProduto: {tempo_produto:.2f} s\nSubstrato: {tempo_substrato:.2f} s\nDuas variaveis: {tempo_duasvar:.2f} s')
-    report.write(f'\n\n************* R-square ************* \nProduto: {coefcorr_produto:.4f}\nSubstrato: {coefcorr_substrato:.4f}\nDuas variaveis: {coefcorr_geral:.4f}')
+    report.write(f'\n\n************* R-square ************* \nProduto: {coefcorr_produto:.4f}\nSubstrato: {coefcorr_substrato:.4f}\nDuas variaveis: S ({coefcorr_geral[0]:.4f}) ; P({coefcorr_geral[1]:.4f})')
     report.close()
 
 def main():
@@ -178,7 +178,11 @@ def main():
     paras.add('Y_P_S', value=0.8, min=0.01, max=1.)
     paras.add('k_dec', value=0.015, min=0.01, max=1)
     paras.add('D', value=0., vary=False)   
-     
+    
+    ranges: str = paras.pretty_repr(oneline=False)
+    print(ranges)
+    ranges2 = paras.pretty_repr(oneline=True)
+    print(ranges)
     ## definindo método de minimização usado na função .minimize:
     metodoMinimizacao:str = 'Nelder-Mead'    
     ## otimização para Substrato (0), Biomassa (1), Produto (2):
@@ -229,7 +233,7 @@ def main():
     resultGeral.params.pretty_print(colwidth='6', columns=['name', 'value', 'vary', 'min', 'max', 'stderr'])
     print(chalk.yellow(resultGeral.message))
     coefcorr_geral = r2(dadoOtimizacao, 10, metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol)
-    print(chalk.yellow(f'R2 = {coefcorr_geral:.4f}'))
+    print(chalk.yellow(f'R2 - S = {coefcorr_geral[0]:.4f} ; P = {coefcorr_geral[1]:.4f}'))
     tempo_duasvar = (time.time()-start_time_duasvar)
     print(chalk.yellow(f'Tempo exec: = {tempo_duasvar:.2f} s'))
 
@@ -241,7 +245,7 @@ def main():
     # REPORT DATA:
     print(chalk.red('\nEscrevendo relatorio:'))
     caminho = './Modelo_1/Report.txt'
-    writeReport(resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
+    writeReport(ranges, resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
     print(chalk.blue('OK'))
 
     plt.show()
