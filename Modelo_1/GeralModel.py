@@ -229,11 +229,7 @@ def main():
     
     tempo_produto:float = (time.time()-start_time_produto) 
     print(chalk.yellow(f'Tempo exec: = {tempo_produto:.2f} s'))
-       
-    ## execução da função de integração otimizada para produto e plotagem do gráfico:
-    print(chalk.blue("plotagem chamada para produto"))
-    # plotagem(integracao(metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Produto')
-    print(chalk.blue("OK\n"))
+        
     
     ########### SUBSTRATO ########### 
     print(chalk.green("\nminimize chamada para substrato"))
@@ -247,10 +243,6 @@ def main():
     
     tempo_substrato = (time.time()-start_time_substrato)
     print(chalk.yellow(f'Tempo exec: = {tempo_substrato:.2f} s'))
-    # execução da função de integração otimizada para produto e plotagem do gráfico:
-    print(chalk.blue("plotagem chamada para Substrato"))
-    # plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Substrato')
-    print(chalk.blue("OK\n"))
     
     ###########  PRODUTO E SUBSTRATO ########### 
     print(chalk.green("\nminimize chamada para duas variáveis"))
@@ -262,11 +254,6 @@ def main():
     print(chalk.yellow(f'R2 = {coefcorr_geral:.4f}'))
     tempo_duasvar = (time.time()-start_time_duasvar)
     print(chalk.yellow(f'Tempo exec: = {tempo_duasvar:.2f} s'))
-
-    # execução da função de integração e plotagem do gráfico: 
-    print(chalk.blue("plotagem chamada para duas variáveis"))
-    # plotagem(integracao(metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'P e S')
-    print(chalk.blue("OK\n"))
     
     # REPORT DATA:
     print(chalk.red('\nEscrevendo relatorio:'))
@@ -275,14 +262,12 @@ def main():
     print(chalk.blue('OK'))
 
     ## Plotagem em subplots
-    # best_param_S = np.fromiter(resultSubstrato.params.valuesdict().values(), dtype=float)
-    # best_param_P = np.fromiter(resultProduto.params.valuesdict().values(), dtype=float)
-    # best_param_S_P = np.fromiter(resultGeral.params.valuesdict().values(), dtype=float)
-    # param_matrix = np.array([best_param_S, best_param_P, best_param_S_P])
-    # print(param_matrix)
+    print(chalk.red("\nPlotagem chamada"))
     subplts(dadoOtimizacao, resultSubstrato.params, resultProduto.params, resultGeral.params, metodoIntegracao, t_step, t_solve_ivp, x, rtol, atol, metodoMinimizacao)
     plt.xlabel(r"t - dias")    
     plt.tight_layout()
+    plt.savefig('./Modelo_1/teste.png')
+    print(chalk.blue("OK\n"))
     plt.show()
     
     
