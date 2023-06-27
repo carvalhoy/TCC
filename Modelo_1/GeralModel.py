@@ -142,6 +142,36 @@ def plotagem(solve_ivp:object, dados_P:pd.DataFrame, dados_S:pd.DataFrame, metod
      ## segurar a exibição das figuras até o final de todos os ajustes:
     plt.draw()
     
+def subplts(data, parametros_S, parametros_P, parametros_S_P, metodoIntegracao , t_step, t_solve_ivp, x, rtol, atol, metodoOtimizacao):
+    
+    # fit_S = scipy.integrate.solve_ivp(model, [0, 240], x, metodoIntegracao, args=[tuple(parametros[0])], t_eval=t_solve_ivp)
+    # fit_P = scipy.integrate.solve_ivp(model, [0, 240], x, args=[tuple(parametros[1])], t_eval=t_solve_ivp)
+    # fit_S_P = scipy.integrate.solve_ivp(model, [0, 240], x, args=[tuple(parametros[2])], t_eval=t_solve_ivp)
+    fit_S = integracao(metodoIntegracao, t_step, parametros_S, t_solve_ivp, x, rtol, atol)
+    fit_P = integracao(metodoIntegracao, t_step, parametros_P, t_solve_ivp, x, rtol, atol)
+    fit_S_P = integracao(metodoIntegracao, t_step, parametros_S_P, t_solve_ivp, x, rtol, atol)
+    
+    fig, axs = plt.subplots(3, 1)
+    axs[0].set_prop_cycle(color=['red', 'blue', 'red', 'green', 'blue'])
+    axs[0].plot(t_solve_ivp, data[0], 'x', t_solve_ivp, data[1], 'x', t_solve_ivp, np.transpose(fit_S.y))
+    axs[0].legend(['S exp', 'P exp', 'S fit', 'X fit', 'P fit'], bbox_to_anchor=(1.05, 1.0), fontsize='7')
+    axs[0].set_title(f'${metodoIntegracao} + ${metodoOtimizacao} - Ajuste de Substrato', fontsize=8)
+    axs[0].set_ylabel(r"C - $kgDQO{m^3}$")  
+
+    
+    axs[1].set_prop_cycle(color=['red', 'blue', 'red', 'green', 'blue'])
+    axs[1].plot(t_solve_ivp, data[0], 'x', t_solve_ivp, data[1], 'x', t_solve_ivp, np.transpose(fit_P.y))
+    axs[1].legend(['S exp', 'P exp', 'S fit', 'X fit', 'P fit'], bbox_to_anchor=(1.05, 1.0), fontsize='7')
+    axs[1].set_title(f'${metodoIntegracao} + ${metodoOtimizacao} - Ajuste de Produto', fontsize=8)
+    axs[1].set_ylabel(r"C - $kgDQO{m^3}$")  
+    
+    axs[2].set_prop_cycle(color=['red', 'blue', 'red', 'green', 'blue'])
+    axs[2].plot(t_solve_ivp, data[0], 'x', t_solve_ivp, data[1], 'x', t_solve_ivp, np.transpose(fit_S_P.y))
+    axs[2].legend(['S exp', 'P exp', 'S fit', 'X fit', 'P fit'], bbox_to_anchor=(1.05, 1.0), fontsize='7')
+    axs[2].set_title(f'${metodoIntegracao} + ${metodoOtimizacao} - Ajuste de S e P', fontsize=8)
+    axs[2].set_ylabel(r"C - $kgDQO{m^3}$")  
+    
+    
 def writeReport(resultProduto:object, resultSubstrato:object, resultGeral:object, tempo_produto:float, tempo_substrato:float, tempo_duasvar:float, coefcorr_produto:float, coefcorr_substrato:float, coefcorr_geral:float, caminho:str):
     report = open(caminho, 'a')
     report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* PRODUTO ************* \n\n{lm.fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{lm.fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{lm.fit_report(resultGeral)}')
@@ -202,7 +232,7 @@ def main():
        
     ## execução da função de integração otimizada para produto e plotagem do gráfico:
     print(chalk.blue("plotagem chamada para produto"))
-    plotagem(integracao(metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Produto')
+    # plotagem(integracao(metodoIntegracao, t_step, resultProduto.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Produto')
     print(chalk.blue("OK\n"))
     
     ########### SUBSTRATO ########### 
@@ -219,7 +249,7 @@ def main():
     print(chalk.yellow(f'Tempo exec: = {tempo_substrato:.2f} s'))
     # execução da função de integração otimizada para produto e plotagem do gráfico:
     print(chalk.blue("plotagem chamada para Substrato"))
-    plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Substrato')
+    # plotagem(integracao(metodoIntegracao, t_step, resultSubstrato.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'Substrato')
     print(chalk.blue("OK\n"))
     
     ###########  PRODUTO E SUBSTRATO ########### 
@@ -235,7 +265,7 @@ def main():
 
     # execução da função de integração e plotagem do gráfico: 
     print(chalk.blue("plotagem chamada para duas variáveis"))
-    plotagem(integracao(metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'P e S')
+    # plotagem(integracao(metodoIntegracao, t_step, resultGeral.params, t_solve_ivp, x, rtol, atol), dados_P, dados_S, metodoIntegracao, metodoMinimizacao, 'P e S')
     print(chalk.blue("OK\n"))
     
     # REPORT DATA:
@@ -244,6 +274,15 @@ def main():
     writeReport(resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
     print(chalk.blue('OK'))
 
+    ## Plotagem em subplots
+    # best_param_S = np.fromiter(resultSubstrato.params.valuesdict().values(), dtype=float)
+    # best_param_P = np.fromiter(resultProduto.params.valuesdict().values(), dtype=float)
+    # best_param_S_P = np.fromiter(resultGeral.params.valuesdict().values(), dtype=float)
+    # param_matrix = np.array([best_param_S, best_param_P, best_param_S_P])
+    # print(param_matrix)
+    subplts(dadoOtimizacao, resultSubstrato.params, resultProduto.params, resultGeral.params, metodoIntegracao, t_step, t_solve_ivp, x, rtol, atol, metodoMinimizacao)
+    plt.xlabel(r"t - dias")    
+    plt.tight_layout()
     plt.show()
     
     
