@@ -8,6 +8,7 @@ import lmfit as lm
 #from lmfit import minimize, Parameters, report_fit, fit_report # 1.2.1
 from simple_chalk import chalk # 0.1.0
 import time  
+import random
 
 
 ##ajustar dados utilizados na otimização:
@@ -172,9 +173,9 @@ def subplts(data, parametros_S, parametros_P, parametros_S_P, metodoIntegracao ,
     axs[2].set_ylabel(r"C - $kgDQO{m^3}$")  
     
     
-def writeReport(ranges: str, resultProduto:object, resultSubstrato:object, resultGeral:object, tempo_produto:float, tempo_substrato:float, tempo_duasvar:float, coefcorr_produto:float, coefcorr_substrato:float, coefcorr_geral:float, caminho:str):
+def writeReport(id:str, ranges: str, resultProduto:object, resultSubstrato:object, resultGeral:object, tempo_produto:float, tempo_substrato:float, tempo_duasvar:float, coefcorr_produto:float, coefcorr_substrato:float, coefcorr_geral:float, caminho:str):
     report = open(caminho, 'a')
-    report.write(f'\n\n************************************** REPORT {dt.now()}: **************************************\n\n************* ESPACO PARAMETRICO *************\n\n{ranges}\n\n************* PRODUTO *************\n\n{lm.fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{lm.fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{lm.fit_report(resultGeral)}')
+    report.write(f'\n\n************************************** REPORT ID {id} - {dt.now()}: **************************************\n\n************* ESPACO PARAMETRICO *************\n\n{ranges}\n\n************* PRODUTO *************\n\n{lm.fit_report(resultProduto)}\n\n************* SUBSTRATO ************* \n\n{lm.fit_report(resultSubstrato)}\n\n************* GERAL ************* \n\n{lm.fit_report(resultGeral)}')
     report.write(f'\n\n************* Tempos de execucao ************* \nProduto: {tempo_produto:.2f} s\nSubstrato: {tempo_substrato:.2f} s\nDuas variaveis: {tempo_duasvar:.2f} s')
     report.write(f'\n\n************* R-square ************* \nProduto: {coefcorr_produto:.4f}\nSubstrato: {coefcorr_substrato:.4f}\nDuas variaveis: S ({coefcorr_geral[0]:.4f}) ; P({coefcorr_geral[1]:.4f})')
     report.close()
@@ -257,9 +258,10 @@ def main():
     print(chalk.yellow(f'Tempo exec: = {tempo_duasvar:.2f} s'))
     
     # REPORT DATA:
+    id = str(random.randint(1,201))
     print(chalk.red('\nEscrevendo relatorio:'))
     caminho = './Modelo_1/Report.txt'
-    writeReport(ranges, resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
+    writeReport(id, ranges, resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
     print(chalk.blue('OK'))
 
     ## Plotagem em subplots
@@ -267,7 +269,7 @@ def main():
     subplts(dadoOtimizacao, resultSubstrato.params, resultProduto.params, resultGeral.params, metodoIntegracao, t_step, t_solve_ivp, x, rtol, atol, metodoMinimizacao)
     plt.xlabel(r"t - dias")    
     plt.tight_layout()
-    plt.savefig('./Modelo_1/teste.png')
+    plt.savefig(f'./Modelo_1/graphs/{id}.png')
     print(chalk.blue("OK\n"))
     plt.show()
     
