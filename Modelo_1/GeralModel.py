@@ -203,11 +203,11 @@ def main():
     ## definindo parâmetros para Curve Fitting:
     paras = lm.Parameters()
     paras.add('S_in', value=0., vary=False)
-    paras.add('mumax_X', value=0.05, min=0.01, max=1)
-    paras.add('K_S', value=0.8, min=0.1, max=9)
-    paras.add('Y_X_S', value=0.2, min=0.001, max=0.7)
-    paras.add('Y_P_S', value=0.8, min=0.01, max=0.9)
-    paras.add('k_dec', value=0.015, min=0.01, max=0.5)
+    paras.add('mumax_X', value=0.1, min=0.08, max=0.5)
+    paras.add('K_S', value=3., min=0.1, max=70.)
+    paras.add('Y_X_S', value=0.5, min=0.1, max=0.7)
+    paras.add('Y_P_S', value=0.8, min=0.1, max=0.9)
+    paras.add('k_dec', value=0.015, min=0.001, max=0.35)
     paras.add('D', value=0., vary=False)   
     
     ranges: str = paras.pretty_repr(oneline=False)
