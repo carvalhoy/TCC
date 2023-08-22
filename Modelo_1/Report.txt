@@ -1946,3 +1946,1383 @@ Duas variaveis: 12.85 s
 Produto: 0.9183
 Substrato: 0.9306
 Duas variaveis: S (0.9306) ; P(0.9164)
+
+************************************** REPORT ID 201 - 2023-08-19 18:42:15.758034: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1, bounds=[0.08:1.2]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[3.9e-05:30.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.1, bounds=[0.1:0.3]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 83
+    # data points      = 25
+    # variables        = 4
+    chi-square         = 2.34001455
+    reduced chi-square = 0.11142926
+    Akaike info crit   = -51.2179669
+    Bayesian info crit = -46.3424636
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.09971562 (init = 0.1)
+    K_S:      2.98695606 (init = 3)
+    Y_X_S:    0.10018764 (init = 0.1)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.01486879 (init = 0.015)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 98
+    # data points      = 25
+    # variables        = 4
+    chi-square         = 2.49272681
+    reduced chi-square = 0.11870128
+    Akaike info crit   = -49.6374652
+    Bayesian info crit = -44.7619619
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.09998549 +/- 45.7413855 (45748.03%) (init = 0.1)
+    K_S:      2.74292876 +/- 2388.24508 (87069.16%) (init = 3)
+    Y_X_S:    0.10004614 +/- 0.82251259 (822.13%) (init = 0.1)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.01434423 +/- 20.9243539 (145872.92%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, k_dec) = +0.5074
+    C(K_S, Y_X_S)     = -0.1354
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 83
+    # data points      = 25
+    # variables        = 4
+    chi-square         = 3.68107606
+    reduced chi-square = 0.17528934
+    Akaike info crit   = -39.8917677
+    Bayesian info crit = -35.0162644
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.09791542 (init = 0.1)
+    K_S:      2.94139711 (init = 3)
+    Y_X_S:    0.10001153 (init = 0.1)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.01518255 (init = 0.015)
+    D:        0 (fixed)
+
+************* Tempos de execucao ************* 
+Produto: 4.40 s
+Substrato: 5.79 s
+Duas variaveis: 5.26 s
+
+************* R-square ************* 
+Produto: -0.3221
+Substrato: -0.5057
+Duas variaveis: S (-0.5057) ; P(-0.3221)
+
+************************************** REPORT ID 116 - 2023-08-19 18:46:51.579363: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1, bounds=[0.08:1.2]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[3.9e-05:30.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[0.1:0.3]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 337
+    # data points      = 25
+    # variables        = 4
+    chi-square         = 0.82271005
+    reduced chi-square = 0.03917667
+    Akaike info crit   = -77.3506819
+    Bayesian info crit = -72.4751786
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 9.5954e-07 (0.00%) (init = 0.1)
+    K_S:      30.0000000 +/- 6.0932e-04 (0.00%) (init = 3)
+    Y_X_S:    0.30000000 +/- 5.0470e-07 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.11153818 +/- 0.00934994 (8.38%) (init = 0.015)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 294
+    # data points      = 25
+    # variables        = 4
+    chi-square         = 0.75078271
+    reduced chi-square = 0.03575156
+    Akaike info crit   = -79.6378708
+    Bayesian info crit = -74.7623675
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 6.6203e-08 (0.00%) (init = 0.1)
+    K_S:      30.0000000 +/- 5.1212e-04 (0.00%) (init = 3)
+    Y_X_S:    0.30000000 +/- 3.0910e-06 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.11145195 +/- 0.00811826 (7.28%) (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 299
+    # data points      = 25
+    # variables        = 4
+    chi-square         = 0.22492598
+    reduced chi-square = 0.01071076
+    Akaike info crit   = -109.771494
+    Bayesian info crit = -104.895990
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 9.2774e-08 (0.00%) (init = 0.1)
+    K_S:      30.0000000 +/- 3.6677e-04 (0.00%) (init = 3)
+    Y_X_S:    0.30000000 +/- 1.9139e-07 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.12384499 +/- 0.00558072 (4.51%) (init = 0.015)
+    D:        0 (fixed)
+
+************* Tempos de execucao ************* 
+Produto: 7.62 s
+Substrato: 6.80 s
+Duas variaveis: 6.97 s
+
+************* R-square ************* 
+Produto: 0.5352
+Substrato: 0.5465
+Duas variaveis: S (0.4969) ; P(0.4974)
+
+************************************** REPORT ID 98 - 2023-08-19 18:57:23.800069: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1, bounds=[0.08:1.2]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[3.9e-05:30.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[0.1:0.3]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.4, bounds=[0.001:0.877]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 179
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 1.17053869
+    reduced chi-square = 0.05852693
+    Akaike info crit   = -66.5352941
+    Bayesian info crit = -60.4409149
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  1.19434635 (init = 0.1)
+    K_S:      5.66167911 (init = 3)
+    Y_X_S:    0.11384914 (init = 0.3)
+    Y_P_S:    0.68562927 (init = 0.4)
+    k_dec:    0.28097561 (init = 0.015)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 364
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.75078271
+    reduced chi-square = 0.03753914
+    Akaike info crit   = -77.6378708
+    Bayesian info crit = -71.5434916
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 4.0450e-07 (0.00%) (init = 0.1)
+    K_S:      30.0000000 +/- 6.2459e-05 (0.00%) (init = 3)
+    Y_X_S:    0.30000000 +/- 5.4565e-06 (0.00%) (init = 0.3)
+    Y_P_S:    0.35656441 +/- 333.517541 (93536.41%) (init = 0.4)
+    k_dec:    0.11145193 +/- 0.00831874 (7.46%) (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 170
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 1.55157577
+    reduced chi-square = 0.07757879
+    Akaike info crit   = -59.4901197
+    Bayesian info crit = -53.3957406
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.50514656 (init = 0.1)
+    K_S:      4.38337519 (init = 3)
+    Y_X_S:    0.22961952 (init = 0.3)
+    Y_P_S:    0.53292924 (init = 0.4)
+    k_dec:    0.04967919 (init = 0.015)
+    D:        0 (fixed)
+
+************* Tempos de execucao ************* 
+Produto: 9.63 s
+Substrato: 8.69 s
+Duas variaveis: 8.42 s
+
+************* R-square ************* 
+Produto: 0.3386
+Substrato: 0.5465
+Duas variaveis: S (-0.5057) ; P(-0.0821)
+
+************************************** REPORT ID 22 - 2023-08-19 19:06:22.143407: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1, bounds=[0.08:1.2]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[3.9e-05:39.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.01:0.8]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.6139, bounds=[0.6139:1.1401000000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 538
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.26349704
+    reduced chi-square = 0.01317485
+    Akaike info crit   = -103.814724
+    Bayesian info crit = -97.7203447
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 3.7521e-07 (0.00%) (init = 0.1)
+    K_S:      39.0000000 +/- 2.8443e-05 (0.00%) (init = 3)
+    Y_X_S:    0.80000000 +/- 2.2603e-06 (0.00%) (init = 0.6)
+    Y_P_S:    0.84703738 +/- 0.07049333 (8.32%) (init = 0.6139)
+    k_dec:    0.04431880 +/- 0.00819373 (18.49%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec) = +0.9383
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 341
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.21713844
+    reduced chi-square = 0.01085692
+    Akaike info crit   = -108.652400
+    Bayesian info crit = -102.558021
+##  Warning: uncertainties could not be estimated:
+    mumax_X:  at boundary
+    K_S:      at boundary
+    Y_X_S:    at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 (init = 0.1)
+    K_S:      39.0000000 (init = 3)
+    Y_X_S:    0.80000000 (init = 0.6)
+    Y_P_S:    1.04833415 (init = 0.6139)
+    k_dec:    0.04769826 (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 600
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.01522801
+    reduced chi-square = 7.6140e-04
+    Akaike info crit   = -175.087370
+    Bayesian info crit = -168.992991
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 3.0334e-07 (0.00%) (init = 0.1)
+    K_S:      39.0000000 +/- 2.0347e-04 (0.00%) (init = 3)
+    Y_X_S:    0.80000000 +/- 7.5857e-07 (0.00%) (init = 0.6)
+    Y_P_S:    0.86248229 +/- 0.03898817 (4.52%) (init = 0.6139)
+    k_dec:    0.04831643 +/- 0.00233383 (4.83%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec) = +0.8330
+
+************* Tempos de execucao ************* 
+Produto: 8.02 s
+Substrato: 5.25 s
+Duas variaveis: 8.10 s
+
+************* R-square ************* 
+Produto: 0.8511
+Substrato: 0.8688
+Duas variaveis: S (0.8683) ; P(0.8449)
+
+************************************** REPORT ID 150 - 2023-08-19 19:08:10.530729: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1, bounds=[0.08:1.2]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[3.9e-05:30]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.01:0.8]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.6139, bounds=[0.6139:1.1401000000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 524
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.33273417
+    reduced chi-square = 0.01663671
+    Akaike info crit   = -97.9821804
+    Bayesian info crit = -91.8878013
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 3.3749e-07 (0.00%) (init = 0.1)
+    K_S:      30.0000000 +/- 1.5592e-04 (0.00%) (init = 3)
+    Y_X_S:    0.80000000 +/- 5.4367e-06 (0.00%) (init = 0.6)
+    Y_P_S:    0.84107579 +/- 0.07779011 (9.25%) (init = 0.6139)
+    k_dec:    0.05344056 +/- 0.00985033 (18.43%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec) = +0.9366
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 492
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.28022825
+    reduced chi-square = 0.01401141
+    Akaike info crit   = -102.275667
+    Bayesian info crit = -96.1812876
+##  Warning: uncertainties could not be estimated:
+    mumax_X:  at boundary
+    K_S:      at boundary
+    Y_X_S:    at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 (init = 0.1)
+    K_S:      30.0000000 (init = 3)
+    Y_X_S:    0.80000000 (init = 0.6)
+    Y_P_S:    1.04254710 (init = 0.6139)
+    k_dec:    0.05769726 (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 510
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.02575317
+    reduced chi-square = 0.00128766
+    Akaike info crit   = -161.951831
+    Bayesian info crit = -155.857452
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.08000000 +/- 3.0349e-07 (0.00%) (init = 0.1)
+    K_S:      30.0000000 +/- 7.8581e-05 (0.00%) (init = 3)
+    Y_X_S:    0.80000000 +/- 1.0420e-06 (0.00%) (init = 0.6)
+    Y_P_S:    0.85801038 +/- 0.04478013 (5.22%) (init = 0.6139)
+    k_dec:    0.05869751 +/- 0.00285359 (4.86%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec) = +0.8310
+
+************* Tempos de execucao ************* 
+Produto: 8.22 s
+Substrato: 7.88 s
+Duas variaveis: 7.99 s
+
+************* R-square ************* 
+Produto: 0.8120
+Substrato: 0.8307
+Duas variaveis: S (0.8295) ; P(0.8016)
+
+************************************** REPORT ID 77 - 2023-08-19 19:29:29.146748: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1, bounds=[0.055999999999999994:0.10400000000000001]>, 
+    'K_S': <Parameter 'K_S', value=15.0, bounds=[15.0:45.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.01:0.8]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.6139, bounds=[0.6139:1.1401000000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 857
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.06941534
+    reduced chi-square = 0.00347077
+    Akaike info crit   = -137.163079
+    Bayesian info crit = -131.068700
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.05600000 +/- 2.6898e-08 (0.00%) (init = 0.1)
+    K_S:      45.0000000 +/- 2.4669e-04 (0.00%) (init = 15)
+    Y_X_S:    0.80000000 +/- 2.3697e-06 (0.00%) (init = 0.6)
+    Y_P_S:    0.89581289 +/- 0.04817481 (5.38%) (init = 0.6139)
+    k_dec:    0.02806365 +/- 0.00354989 (12.65%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec) = +0.9620
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 567
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.06509288
+    reduced chi-square = 0.00325464
+    Akaike info crit   = -138.770398
+    Bayesian info crit = -132.676019
+##  Warning: uncertainties could not be estimated:
+    mumax_X:  at boundary
+    K_S:      at boundary
+    Y_X_S:    at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.05600000 (init = 0.1)
+    K_S:      45.0000000 (init = 15)
+    Y_X_S:    0.80000000 (init = 0.6)
+    Y_P_S:    1.07791558 (init = 0.6139)
+    k_dec:    0.02698539 (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 793
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.00105289
+    reduced chi-square = 5.2644e-05
+    Akaike info crit   = -241.877352
+    Bayesian info crit = -235.782972
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.05600000 +/- 9.3485e-08 (0.00%) (init = 0.1)
+    K_S:      45.0000000 +/- 4.3553e-05 (0.00%) (init = 15)
+    Y_X_S:    0.80000000 +/- 1.2126e-06 (0.00%) (init = 0.6)
+    Y_P_S:    0.88251831 +/- 0.02013144 (2.28%) (init = 0.6139)
+    k_dec:    0.02708064 +/- 9.2353e-04 (3.41%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec) = +0.8425
+
+************* Tempos de execucao ************* 
+Produto: 10.11 s
+Substrato: 6.86 s
+Duas variaveis: 10.17 s
+
+************* R-square ************* 
+Produto: 0.9608
+Substrato: 0.9607
+Duas variaveis: S (0.9607) ; P(0.9606)
+
+************************************** REPORT ID 139 - 2023-08-19 19:34:05.734268: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.08, bounds=[0.001:0.08]>, 
+    'K_S': <Parameter 'K_S', value=15.0, bounds=[15.0:45.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.01:0.8]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.6139, bounds=[0.6139:1.1401000000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 2378
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.00206303
+    reduced chi-square = 1.0315e-04
+    Akaike info crit   = -225.061427
+    Bayesian info crit = -218.967048
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.00100064 +/- 4.5457e-05 (4.54%) (init = 0.08)
+    K_S:      44.8616903 +/- 1.42951640 (3.19%) (init = 15)
+    Y_X_S:    0.01963409 +/- 0.00169868 (8.65%) (init = 0.6)
+    Y_P_S:    1.11752501 +/- 0.08338969 (7.46%) (init = 0.6139)
+    k_dec:    0.01283832 +/- 0.00105160 (8.19%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(Y_P_S, k_dec)   = +0.9667
+    C(Y_X_S, Y_P_S)   = +0.8122
+    C(Y_X_S, k_dec)   = +0.7700
+    C(mumax_X, Y_X_S) = +0.5287
+    C(K_S, Y_X_S)     = -0.2148
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 1661
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.03106384
+    reduced chi-square = 0.00155319
+    Akaike info crit   = -157.264668
+    Bayesian info crit = -151.170289
+##  Warning: uncertainties could not be estimated:
+    mumax_X:  at boundary
+    K_S:      at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.00100000 (init = 0.08)
+    K_S:      45.0000000 (init = 15)
+    Y_X_S:    0.01387221 (init = 0.6)
+    Y_P_S:    0.85325254 (init = 0.6139)
+    k_dec:    0.01024174 (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 1209
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 2.7626e-04
+    reduced chi-square = 1.3813e-05
+    Akaike info crit   = -275.326457
+    Bayesian info crit = -269.232078
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.00161360 +/- 0.00369432 (228.95%) (init = 0.08)
+    K_S:      34.2699166 +/- 21.3805508 (62.39%) (init = 15)
+    Y_X_S:    0.02645229 +/- 0.05994126 (226.60%) (init = 0.6)
+    Y_P_S:    0.88089631 +/- 0.01931529 (2.19%) (init = 0.6139)
+    k_dec:    0.01080529 +/- 0.00259033 (23.97%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9911
+    C(K_S, k_dec)     = -0.7962
+    C(Y_X_S, k_dec)   = +0.3650
+    C(Y_P_S, k_dec)   = +0.2884
+    C(mumax_X, k_dec) = +0.2597
+    C(mumax_X, K_S)   = +0.1918
+
+************* Tempos de execucao ************* 
+Produto: 15.77 s
+Substrato: 13.33 s
+Duas variaveis: 10.62 s
+
+************* R-square ************* 
+Produto: 0.9988
+Substrato: 0.9812
+Duas variaveis: S (0.9801) ; P(0.9903)
+
+************************************** REPORT ID 122 - 2023-08-19 19:37:36.151474: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.08, bounds=[0.0001:0.08]>, 
+    'K_S': <Parameter 'K_S', value=15.0, bounds=[15.0:45.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.01:0.8]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.6139, bounds=[0.6139:1.1401000000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 2873
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.00207824
+    reduced chi-square = 1.0391e-04
+    Akaike info crit   = -224.877756
+    Bayesian info crit = -218.783377
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  5.3008e-04 +/- 1.9151e-04 (36.13%) (init = 0.08)
+    K_S:      43.7108987 +/- 4.28777323 (9.81%) (init = 15)
+    Y_X_S:    0.01023389 +/- 0.00361841 (35.36%) (init = 0.6)
+    Y_P_S:    1.08292399 +/- 0.06939258 (6.41%) (init = 0.6139)
+    k_dec:    0.01229275 +/- 0.00103170 (8.39%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9739
+    C(Y_P_S, k_dec)   = +0.9459
+    C(K_S, k_dec)     = -0.2439
+    C(mumax_X, K_S)   = +0.1535
+    C(mumax_X, Y_P_S) = -0.1528
+    C(mumax_X, k_dec) = -0.1090
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 2078
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.03096568
+    reduced chi-square = 0.00154828
+    Akaike info crit   = -157.343789
+    Bayesian info crit = -151.249410
+##  Warning: uncertainties could not be estimated:
+    K_S:      at boundary
+    Y_X_S:    at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  7.2140e-04 (init = 0.08)
+    K_S:      45.0000000 (init = 15)
+    Y_X_S:    0.01000000 (init = 0.6)
+    Y_P_S:    0.75307248 (init = 0.6139)
+    k_dec:    0.01016899 (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 1139
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 2.8037e-04
+    reduced chi-square = 1.4018e-05
+    Akaike info crit   = -274.956975
+    Bayesian info crit = -268.862596
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.00179661 +/- 0.00444619 (247.48%) (init = 0.08)
+    K_S:      31.6040359 +/- 24.1609580 (76.45%) (init = 15)
+    Y_X_S:    0.03063830 +/- 0.07433357 (242.62%) (init = 0.6)
+    Y_P_S:    0.88112354 +/- 0.01933231 (2.19%) (init = 0.6139)
+    k_dec:    0.01116291 +/- 0.00307847 (27.58%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9897
+    C(K_S, k_dec)     = -0.8202
+    C(Y_X_S, k_dec)   = +0.3376
+    C(Y_P_S, k_dec)   = +0.2659
+    C(mumax_X, K_S)   = +0.2573
+    C(mumax_X, k_dec) = +0.2156
+    C(K_S, Y_X_S)     = +0.1170
+
+************* Tempos de execucao ************* 
+Produto: 18.73 s
+Substrato: 16.44 s
+Duas variaveis: 10.03 s
+
+************* R-square ************* 
+Produto: 0.9988
+Substrato: 0.9813
+Duas variaveis: S (0.9798) ; P(0.9901)
+
+************************************** REPORT ID 182 - 2023-08-19 19:42:48.612189: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.08, bounds=[0.0001:0.08]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[3.9e-05:45.0]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.01:0.8]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.6139, bounds=[0.6139:1.1401000000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 667
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.00461956
+    reduced chi-square = 2.3098e-04
+    Akaike info crit   = -204.908303
+    Bayesian info crit = -198.813923
+##  Warning: uncertainties could not be estimated:
+    K_S:      at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.01925835 (init = 0.08)
+    K_S:      3.9000e-05 (init = 3)
+    Y_X_S:    0.79987397 (init = 0.6)
+    Y_P_S:    1.10434596 (init = 0.6139)
+    k_dec:    0.03759075 (init = 0.015)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 424
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.03411000
+    reduced chi-square = 0.00170550
+    Akaike info crit   = -154.926014
+    Bayesian info crit = -148.831635
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.02496152 +/- 0.06577534 (263.51%) (init = 0.08)
+    K_S:      3.9003e-05 +/- 4.9262e-05 (126.31%) (init = 3)
+    Y_X_S:    0.72423487 +/- 1.90795742 (263.44%) (init = 0.6)
+    Y_P_S:    0.62136699 +/- 7.23538011 (1164.43%) (init = 0.6139)
+    k_dec:    0.04664793 +/- 0.06581413 (141.09%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9998
+    C(mumax_X, k_dec) = +0.9998
+    C(Y_X_S, k_dec)   = +0.9993
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 327
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 2.7496e-04
+    reduced chi-square = 1.3748e-05
+    Akaike info crit   = -275.444015
+    Bayesian info crit = -269.349636
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.02456896 +/- 0.04550032 (185.19%) (init = 0.08)
+    K_S:      3.9001e-05 +/- 2.3260e-05 (59.64%) (init = 3)
+    Y_X_S:    0.72195494 +/- 1.33674605 (185.16%) (init = 0.6)
+    Y_P_S:    0.87647530 +/- 0.01970723 (2.25%) (init = 0.6139)
+    k_dec:    0.04581057 +/- 0.04552710 (99.38%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9998
+    C(mumax_X, k_dec) = +0.9998
+    C(Y_X_S, k_dec)   = +0.9992
+
+************* Tempos de execucao ************* 
+Produto: 5.56 s
+Substrato: 5.06 s
+Duas variaveis: 4.12 s
+
+************* R-square ************* 
+Produto: 0.9974
+Substrato: 0.9794
+Duas variaveis: S (0.9791) ; P(0.9918)
+
+************************************** REPORT ID 11 - 2023-08-22 16:30:57.714003: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.08, bounds=[0.0001:0.08]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[1e-07:inf]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.6, bounds=[0.001:0.99]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.83315, bounds=[0.83315:0.9208500000000001]>, 
+    'k_dec': <Parameter 'k_dec', value=0.015, bounds=[0.001:0.35]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 598
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.00461953
+    reduced chi-square = 2.3098e-04
+    Akaike info crit   = -204.908433
+    Bayesian info crit = -198.814054
+##  Warning: uncertainties could not be estimated:
+    K_S:      at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.02402040 (init = 0.08)
+    K_S:      1.0005e-07 (init = 3)
+    Y_X_S:    0.77032311 (init = 0.6)
+    Y_P_S:    0.85269380 (init = 0.83315)
+    k_dec:    0.04235279 (init = 0.015)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 513
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 0.03410972
+    reduced chi-square = 0.00170549
+    Akaike info crit   = -154.926217
+    Bayesian info crit = -148.831838
+##  Warning: uncertainties could not be estimated:
+    K_S:      at boundary
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.02510866 (init = 0.08)
+    K_S:      1.0018e-07 (init = 3)
+    Y_X_S:    0.72850627 (init = 0.6)
+    Y_P_S:    0.83391419 (init = 0.83315)
+    k_dec:    0.04679520 (init = 0.015)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 2571
+    # data points      = 25
+    # variables        = 5
+    chi-square         = 2.3971e-04
+    reduced chi-square = 1.1985e-05
+    Akaike info crit   = -278.874313
+    Bayesian info crit = -272.779934
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  5.4436e-04 +/- 0.00340227 (625.01%) (init = 0.08)
+    K_S:      94.7124948 +/- 47.5546172 (50.21%) (init = 3)
+    Y_X_S:    0.00475126 +/- 0.02958415 (622.66%) (init = 0.6)
+    Y_P_S:    0.87911404 +/- 0.01955823 (2.22%) (init = 0.83315)
+    k_dec:    0.00769115 +/- 0.00163879 (21.31%) (init = 0.015)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(mumax_X, Y_X_S) = +0.9982
+    C(K_S, k_dec)     = -0.5962
+    C(Y_P_S, k_dec)   = +0.4278
+    C(Y_X_S, k_dec)   = +0.2514
+    C(mumax_X, k_dec) = +0.2192
+    C(mumax_X, K_S)   = +0.1146
+
+************* Tempos de execucao ************* 
+Produto: 8.25 s
+Substrato: 7.72 s
+Duas variaveis: 27.36 s
+
+************* R-square ************* 
+Produto: 0.9974
+Substrato: 0.9794
+Duas variaveis: S (0.9830) ; P(0.9918)
+
+************************************** REPORT ID 37 - 2023-08-22 17:33:14.625259: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.64 (fixed), bounds=[-inf:inf]>, 
+    'K_S': <Parameter 'K_S', value=3.0, bounds=[-inf:inf]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[-inf:inf]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.1755 (fixed), bounds=[-inf:inf]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 58
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 2.34001455
+    reduced chi-square = 0.10173976
+    Akaike info crit   = -55.2179669
+    Bayesian info crit = -52.7802152
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      2.96601563 +/- 502.849343 (16953.70%) (init = 3)
+    Y_X_S:    0.30832031 +/- 555.048833 (180023.44%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.5623
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 47
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 2.49272681
+    reduced chi-square = 0.10837943
+    Akaike info crit   = -53.6374652
+    Bayesian info crit = -51.1997136
+##  Warning: uncertainties could not be estimated:
+    K_S:      at initial value
+    Y_X_S:    at initial value
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      3.00000000 (init = 3)
+    Y_X_S:    0.30000000 (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 58
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 3.68107606
+    reduced chi-square = 0.16004679
+    Akaike info crit   = -43.8917677
+    Bayesian info crit = -41.4540161
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      2.96601563 +/- 633.802044 (21368.80%) (init = 3)
+    Y_X_S:    0.30832031 +/- 708.612228 (229829.89%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.5895
+
+************* Tempos de execucao ************* 
+Produto: 2.95 s
+Substrato: 2.51 s
+Duas variaveis: 2.98 s
+
+************* R-square ************* 
+Produto: -0.3221
+Substrato: -0.5057
+Duas variaveis: S (-0.5057) ; P(-0.3221)
+
+************************************** REPORT ID 89 - 2023-08-22 17:35:44.172678: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.64 (fixed), bounds=[-inf:inf]>, 
+    'K_S': <Parameter 'K_S', value=300.0, bounds=[-inf:inf]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[-inf:inf]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.1755 (fixed), bounds=[-inf:inf]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 233
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.28648209
+    reduced chi-square = 0.01245574
+    Akaike info crit   = -107.723877
+    Bayesian info crit = -105.286126
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      50.9646056 +/- 2.94173672 (5.77%) (init = 300)
+    Y_X_S:    74.0558796 +/- 42.1702950 (56.94%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.6596
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 187
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.32453698
+    reduced chi-square = 0.01411030
+    Akaike info crit   = -104.605790
+    Bayesian info crit = -102.168039
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      52.6409523 +/- 2.99704492 (5.69%) (init = 300)
+    Y_X_S:    40.0067140 +/- 21.1016654 (52.75%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.6759
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 184
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.02446883
+    reduced chi-square = 0.00106386
+    Akaike info crit   = -169.230773
+    Bayesian info crit = -166.793021
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      53.6268540 +/- 1.54414607 (2.88%) (init = 300)
+    Y_X_S:    43.2315037 +/- 11.3537975 (26.26%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.7076
+
+************* Tempos de execucao ************* 
+Produto: 5.80 s
+Substrato: 4.60 s
+Duas variaveis: 4.48 s
+
+************* R-square ************* 
+Produto: 0.8381
+Substrato: 0.8040
+Duas variaveis: S (0.8008) ; P(0.8305)
+
+************************************** REPORT ID 185 - 2023-08-22 17:37:48.251373: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.64 (fixed), bounds=[-inf:inf]>, 
+    'K_S': <Parameter 'K_S', value=150.0, bounds=[-inf:inf]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[-inf:0.9999]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.1755 (fixed), bounds=[-inf:inf]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 119
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.92540472
+    reduced chi-square = 0.04023499
+    Akaike info crit   = -78.4099983
+    Bayesian info crit = -75.9722466
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      116.439208 +/- 10.8855325 (9.35%) (init = 150)
+    Y_X_S:    0.99990000 +/- 7.5173e-07 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 123
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.85811917
+    reduced chi-square = 0.03730953
+    Akaike info crit   = -80.2972029
+    Bayesian info crit = -77.8594513
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      115.468192 +/- 9.55214624 (8.27%) (init = 150)
+    Y_X_S:    0.99990000 +/- 2.8626e-06 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 133
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.26505510
+    reduced chi-square = 0.01152413
+    Akaike info crit   = -109.667334
+    Bayesian info crit = -107.229583
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      130.750092 +/- 5.88703418 (4.50%) (init = 150)
+    Y_X_S:    0.99990000 +/- 3.5104e-07 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* Tempos de execucao ************* 
+Produto: 2.89 s
+Substrato: 3.01 s
+Duas variaveis: 3.21 s
+
+************* R-square ************* 
+Produto: 0.4771
+Substrato: 0.4817
+Duas variaveis: S (0.4258) ; P(0.4391)
+
+************************************** REPORT ID 88 - 2023-08-22 17:43:09.862935: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.64 (fixed), bounds=[-inf:inf]>, 
+    'K_S': <Parameter 'K_S', value=300.0, bounds=[-inf:inf]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[-inf:0.9999]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.1755 (fixed), bounds=[-inf:inf]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 136
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.92540472
+    reduced chi-square = 0.04023499
+    Akaike info crit   = -78.4099983
+    Bayesian info crit = -75.9722466
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      116.439280 +/- 10.8836866 (9.35%) (init = 300)
+    Y_X_S:    0.99990000 +/- 1.7687e-06 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 148
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.85811917
+    reduced chi-square = 0.03730953
+    Akaike info crit   = -80.2972029
+    Bayesian info crit = -77.8594513
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      115.468210 +/- 9.55140068 (8.27%) (init = 300)
+    Y_X_S:    0.99990000 +/- 3.6783e-06 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 150
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.26505510
+    reduced chi-square = 0.01152413
+    Akaike info crit   = -109.667334
+    Bayesian info crit = -107.229583
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.64 (fixed)
+    K_S:      130.750136 +/- 5.88738433 (4.50%) (init = 300)
+    Y_X_S:    0.99990000 +/- 8.9608e-07 (0.00%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.1755 (fixed)
+    D:        0 (fixed)
+
+************* Tempos de execucao ************* 
+Produto: 3.29 s
+Substrato: 3.61 s
+Duas variaveis: 3.61 s
+
+************* R-square ************* 
+Produto: 0.4771
+Substrato: 0.4817
+Duas variaveis: S (0.4258) ; P(0.4391)
+
+************************************** REPORT ID 139 - 2023-08-22 17:44:34.621721: **************************************
+
+************* ESPACO PARAMETRICO *************
+
+Parameters({
+    'S_in': <Parameter 'S_in', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    'mumax_X': <Parameter 'mumax_X', value=0.1 (fixed), bounds=[-inf:inf]>, 
+    'K_S': <Parameter 'K_S', value=300.0, bounds=[-inf:inf]>, 
+    'Y_X_S': <Parameter 'Y_X_S', value=0.3, bounds=[-inf:0.9999]>, 
+    'Y_P_S': <Parameter 'Y_P_S', value=0.877 (fixed), bounds=[-inf:inf]>, 
+    'k_dec': <Parameter 'k_dec', value=0.01 (fixed), bounds=[-inf:inf]>, 
+    'D': <Parameter 'D', value=0.0 (fixed), bounds=[-inf:inf]>, 
+    })
+
+
+************* PRODUTO *************
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 120
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.01036387
+    reduced chi-square = 4.5060e-04
+    Akaike info crit   = -190.707640
+    Bayesian info crit = -188.269888
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.1 (fixed)
+    K_S:      235.731196 +/- 23.1683895 (9.83%) (init = 300)
+    Y_X_S:    0.54679466 +/- 0.07053686 (12.90%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.01 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.9892
+
+************* SUBSTRATO ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 145
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 0.02930136
+    reduced chi-square = 0.00127397
+    Akaike info crit   = -164.724927
+    Bayesian info crit = -162.287175
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.1 (fixed)
+    K_S:      529.303123 +/- 241.408240 (45.61%) (init = 300)
+    Y_X_S:    0.19928491 +/- 0.10327080 (51.82%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.01 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.9988
+
+************* GERAL ************* 
+
+[[Fit Statistics]]
+    # fitting method   = Nelder-Mead
+    # function evals   = 119
+    # data points      = 25
+    # variables        = 2
+    chi-square         = 2.6441e-04
+    reduced chi-square = 1.1496e-05
+    Akaike info crit   = -282.421867
+    Bayesian info crit = -279.984115
+[[Variables]]
+    S_in:     0 (fixed)
+    mumax_X:  0.1 (fixed)
+    K_S:      403.966808 +/- 71.8656907 (17.79%) (init = 300)
+    Y_X_S:    0.27130159 +/- 0.05679051 (20.93%) (init = 0.3)
+    Y_P_S:    0.877 (fixed)
+    k_dec:    0.01 (fixed)
+    D:        0 (fixed)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(K_S, Y_X_S) = -0.9944
+
+************* Tempos de execucao ************* 
+Produto: 0.98 s
+Substrato: 1.12 s
+Duas variaveis: 0.98 s
+
+************* R-square ************* 
+Produto: 0.9941
+Substrato: 0.9823
+Duas variaveis: S (0.9817) ; P(0.9886)

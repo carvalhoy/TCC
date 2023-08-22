@@ -17,21 +17,22 @@ def ajustarXlsx(caminho:str, parametrosDadosXlsx: list[int]):
     dados:pd.DataFrame = pd.read_excel(caminho, header=None, names=['tempo', 'concentração'], decimal=',')
     dados['tempo'] = np.linspace(tempoInicial, tempoFinal, totalPontos)
     dados['concentração'] = round(dados['concentração']/1000, digitosDecimais)
+    
     return dados
 
 def model (t, x, params:lm.Parameters):
     
-    S = x[0] #g_DQO_S/m^3
-    X = x[1] #g_DQO_X/m^3
-    P = x[2] #g_DQO_P/m^3
+    S = x[0] #kg_DQO_S/m^3
+    X = x[1] #kg_DQO_X/m^3
+    P = x[2] #kg_DQO_P/m^3
 
     try:
          ##parâmetros do modelo
-        S_in = params['S_in'].value
+        S_in = params['S_in'].value #kg_DQO_S/m3
         mu_max_X = params['mumax_X'].value #dia^-1
-        K_S = params['K_S'].value #g_DQO_S/m^3
-        Y_X_S = params['Y_X_S'].value #g_DQO_X/g_DQO_S
-        Y_P_S = params['Y_P_S'].value #g_DQO_P/g_DQO_S
+        K_S = params['K_S'].value #kg_DQO_S/m^3
+        Y_X_S = params['Y_X_S'].value #kg_DQO_X/kg_DQO_S
+        Y_P_S = params['Y_P_S'].value #kg_DQO_P/kg_DQO_S
         k_dec = params['k_dec'].value #dia^-1
         D = params['D'].value #dia^-1
     
@@ -202,13 +203,13 @@ def main():
     
     ## definindo parâmetros para Curve Fitting:
     paras = lm.Parameters()
-    paras.add('S_in', value=0., vary=False)
-    paras.add('mumax_X', value=0.1, min=0.08, max=1.2)
-    paras.add('K_S', value=3., min=3.9e-5, max=30.)
-    paras.add('Y_X_S', value=0., min=0.1, max=0.3)
-    paras.add('Y_P_S', value=0.8, min=0.1, max=0.9)
-    paras.add('k_dec', value=0.015, min=0.001, max=0.35)
-    paras.add('D', value=0., vary=False)   
+    paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
+    paras.add('mumax_X', value=0.1, vary=False) #dia-1
+    paras.add('K_S', value=300.,) #kgDQO_S/m3
+    paras.add('Y_X_S', value=0.3, max=0.9999) #kgDQO_X/kgDQO_S
+    paras.add('Y_P_S', value=0.877, vary=False) #kgDQO_P/kgDQO_S
+    paras.add('k_dec', value=0.01, vary=False) #dia-1
+    paras.add('D', value=0., vary=False) #dia-1   
     
     ranges: str = paras.pretty_repr(oneline=False)
     ## definindo método de minimização usado na função .minimize:
