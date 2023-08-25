@@ -204,11 +204,11 @@ def main():
     ## definindo parâmetros para Curve Fitting:
     paras = lm.Parameters()
     paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
-    paras.add('mumax_X', value=0.1, vary=False) #dia-1
-    paras.add('K_S', value=300.,) #kgDQO_S/m3
-    paras.add('Y_X_S', value=0.3, max=0.9999) #kgDQO_X/kgDQO_S
+    paras.add('mumax_X', value=(0.08+1.2)/2, min=0.08, max=1.2) #dia-1
+    paras.add('K_S', value=(0.0403+4.03)/2, min=0.0403, max=4.03) #kgDQO_S/m3
+    paras.add('Y_X_S', value=(0.00001+0.9999)/2, min=0.00001, max=0.9999) #kgDQO_X/kgDQO_S
     paras.add('Y_P_S', value=0.877, vary=False) #kgDQO_P/kgDQO_S
-    paras.add('k_dec', value=0.01, vary=False) #dia-1
+    paras.add('k_dec', value=(0.001+0.35)/2, min=0.001, max=0.35) #dia-1
     paras.add('D', value=0., vary=False) #dia-1   
     
     ranges: str = paras.pretty_repr(oneline=False)
