@@ -14,10 +14,10 @@ import random
 ##ajustar dados utilizados na otimização:
 def ajustarXlsx(caminho:str, parametrosDadosXlsx: list[int]):
     [tempoInicial, tempoFinal, totalPontos, digitosDecimais] = parametrosDadosXlsx
-    dados:pd.DataFrame = pd.read_excel(caminho, header=None, names=['tempo', 'concentração'], decimal=',')
+    dados:pd.DataFrame = pd.read_csv(caminho, header=None, names=['tempo', 'concentração'])
     dados['tempo'] = np.linspace(tempoInicial, tempoFinal, totalPontos)
-    dados['concentração'] = round(dados['concentração']/1000, digitosDecimais)
-    
+    dados['concentração'] = round(dados['concentração'], digitosDecimais)
+    print(dados)
     return dados
 
 def model (t, x, params:lm.Parameters):
@@ -185,8 +185,9 @@ def main():
     parametrosDadosXlsx:list[int] = [0, 240, 25, 3] #tempo inicial, tempo final, número de pontos, algarismos significativos
     ## importando dados experimentais do excel:
      ### checar caminho do arquivo###
-    dados_P = ajustarXlsx("./xlsx1/produto.xlsx", parametrosDadosXlsx)
-    dados_S = ajustarXlsx("./xlsx1/substrato.xlsx", parametrosDadosXlsx)
+    dados_P = ajustarXlsx("./xlsx1/dados_gouveia_rao_produto.csv", parametrosDadosXlsx)
+    dados_S = ajustarXlsx("./xlsx1/dados_gouveia_rao_substrato.csv", parametrosDadosXlsx)
+    
     ## condições iniciais das variáveis dos balanços: substrato, biomassa, produto;
     x:list[float] = [42.5, 25.2, 0.0]
     ## intervalo de integração:
@@ -198,22 +199,22 @@ def main():
     ## definindo método de integração da função .solve_ivp:
     metodoIntegracao:str = metodosIntegracao[2]
     ## definindo as tolerâncias relativa e absoluta usada na função .solve_ivp:
-    rtol:float = 3e-14
-    atol:float = 1e-18    
+    rtol:float = 1e-8
+    atol:float = 1e-10    
     
     ## definindo parâmetros para Curve Fitting:
     paras = lm.Parameters()
     paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
-    paras.add('mumax_X', value=(0.08+1.2)/2, min=0.08, max=1.2) #dia-1
-    paras.add('K_S', value=(0.0403+4.03)/2, min=0.0403, max=4.03) #kgDQO_S/m3
-    paras.add('Y_X_S', value=(0.00001+0.9999)/2, min=0.00001, max=0.9999) #kgDQO_X/kgDQO_S
-    paras.add('Y_P_S', value=0.877, vary=False) #kgDQO_P/kgDQO_S
-    paras.add('k_dec', value=(0.001+0.35)/2, min=0.001, max=0.35) #dia-1
+    paras.add('mumax_X', value=0.64, min=0.08, max=1.2) #dia-1
+    paras.add('K_S',     value=2.035, min=0.0403, max=4.03) #kgDQO_S/m3
+    paras.add('Y_X_S',   value=0.5, min=0.001, max=0.999) #kgDQO_X/kgDQO_S
+    paras.add('Y_P_S',   value=0.877, vary=False) #kgDQO_P/kgDQO_S
+    paras.add('k_dec',   value=0.1755, min=0.001, max=0.35) #dia-1
     paras.add('D', value=0., vary=False) #dia-1   
     
     ranges: str = paras.pretty_repr(oneline=False)
     ## definindo método de minimização usado na função .minimize:
-    metodoMinimizacao:str = 'Nelder-Mead'    
+    metodoMinimizacao:str = 'trust-constr'    
     ## otimização para Substrato (0), Biomassa (1), Produto (2):
     indice:list[int] = [0, 1, 2]
     ## lista de listas com concentração de Substrato (0) e Produto (1)
