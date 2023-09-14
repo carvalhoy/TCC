@@ -71,26 +71,27 @@ def model (t, x, params:lm.Parameters):
         Y_P_S = params['Y_P_S'].value #kg_DQO_P/kg_DQO_S
         k_dec = params['k_dec'].value #dia^-1
         D = params['D'].value #dia^-1
-        
-    
+        I = params['I'].value
+        a = params['a'].value
+
     except KeyError:
-        S_in, mu_max_X, K_S, Y_X_S, Y_P_S, k_dec, D = params
+        S_in, mu_max_X, K_S, Y_X_S, Y_P_S, k_dec, D, I, a = params
     
      ##definindo a reação:
-    mu = mu_max_X*S/(K_S + S) #dia^-1
+    mu = mu_max_X*S*a*I/(K_S + a*S) #dia^-1
     if (D == 0):
         # print('Operação em batelada')
         ##definindo balanço de componentes:
-        dS_dt = - (mu/Y_X_S)*X
+        dS_dt = -(mu/Y_X_S)*X
         dX_dt = (mu-k_dec)*X
-        dP_dt = ((Y_P_S/Y_X_S)*mu*X)
+        dP_dt = (Y_P_S*(1-Y_X_S)*mu*X)/Y_X_S
     
     else:
         # print('Operação contínua')
         ##definindo balanço de componentes:
         dS_dt = (D)*(S_in - S) - (1/Y_X_S)*mu*X
         dX_dt = (D)*(-X) + (mu-k_dec)*X
-        dP_dt = (D)*(-P) + Y_P_S*((1/Y_X_S)*mu*X)
+        dP_dt = (D)*(-P) + Y_P_S*((1- Y_X_S)*mu*X)/Y_X_S
         
         
 
@@ -228,45 +229,45 @@ def main():
      ### checar caminho do arquivo###
     dados_P = ajustarXlsx("./xlsx1/dados_gouveia_rao_produto.csv", parametrosDadosXlsx)
     dados_S = ajustarXlsx("./xlsx1/dados_gouveia_rao_substrato.csv", parametrosDadosXlsx)
-    # print(dados_P.shape[0])
-    # uexp = np.zeros(dados_S.shape[0])
-    # umax = 0.4
-    # Ks = 0.7
-    # print(dados_S)
-    # print(dados_P)
-    # Yps_exp = np.zeros(dados_S.shape[0] - 1)
-    # Yps_exp_2 = np.zeros(dados_S.shape[0] - 1)
+    print(dados_P.shape[0])
+    uexp = np.zeros(dados_S.shape[0])
+    umax = 0.4
+    Ks = 0.7
+    print(dados_S)
+    print(dados_P)
+    Yps_exp = np.zeros(dados_S.shape[0] - 1)
+    Yps_exp_2 = np.zeros(dados_S.shape[0] - 1)
 
-    # for i in range(dados_S.shape[0] - 1):
-    #     Yps_exp[i] = (dados_P.iloc[i+1][1] - dados_P.iloc[i][1])/(dados_S.iloc[i][1] - dados_S.iloc[i+1][1])
-    #     Yps_exp_2[i] = (dados_P.iloc[i+1][1] - dados_P.iloc[0][1])/(dados_S.iloc[0][1] - dados_S.iloc[i+1][1])
+    for i in range(dados_S.shape[0] - 1):
+        Yps_exp[i] = (dados_P.iloc[i+1][1] - dados_P.iloc[i][1])/(dados_S.iloc[i][1] - dados_S.iloc[i+1][1])
+        Yps_exp_2[i] = (dados_P.iloc[i+1][1] - dados_P.iloc[0][1])/(dados_S.iloc[0][1] - dados_S.iloc[i+1][1])
     
-    # for i in range(dados_S.shape[0]):
-    #     uexp[i] = umax*dados_S.iloc[i][1]/(Ks + dados_S.iloc[i][1])
+    for i in range(dados_S.shape[0]):
+        uexp[i] = umax*dados_S.iloc[i][1]/(Ks + dados_S.iloc[i][1])
         
-    # print((max(dados_P['concentração']) - min(dados_P['concentração']))/(max(dados_S['concentração']) - min(dados_S['concentração'])))
-    # print(max(dados_P['concentração']))
-    # print(min(dados_P['concentração']))
-    # print(max(dados_S['concentração']))
-    # print(min(dados_S['concentração']))
-    # plt.plot(dados_S['concentração'], dados_P['concentração'], 'x')
-    # plt.show()
+    print((max(dados_P['concentração']) - min(dados_P['concentração']))/(max(dados_S['concentração']) - min(dados_S['concentração'])))
+    print(max(dados_P['concentração']))
+    print(min(dados_P['concentração']))
+    print(max(dados_S['concentração']))
+    print(min(dados_S['concentração']))
+    plt.plot(dados_S['concentração'], dados_P['concentração'], 'x')
+    plt.show()
 
-    # plt.plot(dados_S['tempo'][:-1] + 5, Yps_exp_2, 'x')
-    # plt.show()
-    # print(f"Yps_exp_2 é: \n {Yps_exp_2}")
-    # print(f"Yps_exp é: \n {Yps_exp}")
+    plt.plot(dados_S['tempo'][:-1] + 5, Yps_exp_2, 'x')
+    plt.show()
+    print(f"Yps_exp_2 é: \n {Yps_exp_2}")
+    print(f"Yps_exp é: \n {Yps_exp}")
     
-    # plt.plot(dados_S['tempo'][:-1] + 5, Yps_exp, 'x')
-    # plt.plot(dados_S['tempo'], uexp, 'x')
-    # plt.plot(dados_S['tempo'], dados_P['concentração'], "x")
-    # plt.plot(dados_S['tempo'], dados_S['concentração'], "x")
-    # plt.show()
+    plt.plot(dados_S['tempo'][:-1] + 5, Yps_exp, 'x')
+    plt.plot(dados_S['tempo'], uexp, 'x')
+    plt.plot(dados_S['tempo'], dados_P['concentração'], "x")
+    plt.plot(dados_S['tempo'], dados_S['concentração'], "x")
+    plt.show()
     
-    # plt.plot(dados_S['concentração'], uexp, 'x')
-    # plt.show()
+    plt.plot(dados_S['concentração'], uexp, 'x')
+    plt.show()
     ## condições iniciais das variáveis dos balanços: substrato, biomassa, produto;
-    x:list[float] = [38.162, 25.2, 0.0]
+    x:list[float] = [42.5, 25.2, 0.0]
     ## intervalo de integração:
     t_step:list[int] = [0, 240]
     ## dados no tempo a serem retornados pela função integrate.solve_ivp:
@@ -282,12 +283,14 @@ def main():
     ## definindo parâmetros para Curve Fitting:
     paras = lm.Parameters()
     paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
-    paras.add('mumax_X', value=0.05, min=0.02, max=0.8) #dia-1
-    paras.add('K_S',     value=125, min=40.3, max=403.) #kgDQO_S/m3
-    paras.add('Y_X_S',   value=0.13, min=0.01, max=0.2) #kgDQO_X/kgDQO_S
+    paras.add('mumax_X', value=0.07, min=0.05, max=0.8) #dia-1
+    paras.add('K_S',     value=2.8, min=0.0403, max=4.03) #kgDQO_S/m3
+    paras.add('Y_X_S',   value=0.04, min=0.001, max=0.18) #kgDQO_X/kgDQO_S
     paras.add('Y_P_S',   value=0.877, vary=False) #kgDQO_P/kgDQO_S
-    paras.add('k_dec',   value=0.001755, min=0.0005, max=0.035) #dia-1
+    paras.add('k_dec',   value=0.008, vary=False) #dia-1
     paras.add('D', value=0., vary=False) #dia-1   
+    paras.add('I', value=0.01, min=0.001, max=0.65)
+    paras.add('a', value=0.9, min=0.001, max=1)
     
     ranges: str = paras.pretty_repr(oneline=False)
     ## definindo método de minimização usado na função .minimize:
@@ -339,18 +342,18 @@ def main():
     print(chalk.yellow(f'Tempo exec: = {tempo_duasvar:.2f} s'))
     
     # REPORT DATA:
-    id = str(random.randint(1,201))
-    print(chalk.red('\nEscrevendo relatorio:'))
-    caminho = './Modelo_1/Report.txt'
-    writeReport(id, ranges, resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
-    print(chalk.blue('OK'))
+    # id = str(random.randint(1,201))
+    # print(chalk.red('\nEscrevendo relatorio:'))
+    # caminho = './Modelo_1/Report.txt'
+    # writeReport(id, ranges, resultProduto, resultSubstrato, resultGeral, tempo_produto, tempo_substrato, tempo_duasvar, coefcorr_produto, coefcorr_substrato, coefcorr_geral, caminho)
+    # print(chalk.blue('OK'))
 
     ## Plotagem em subplots
     print(chalk.red("\nPlotagem chamada"))
     subplts(dadoOtimizacao, resultSubstrato.params, resultProduto.params, resultGeral.params, metodoIntegracao, t_step, t_solve_ivp, x, rtol, atol, metodoMinimizacao)
     plt.xlabel(r"t - dias")    
     plt.tight_layout()
-    plt.savefig(f'./Modelo_1/graphs/{id}.png')
+    # plt.savefig(f'./Modelo_1/graphs/{id}.png')
     print(chalk.blue("OK\n"))
     plt.show()
     
