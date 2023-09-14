@@ -274,7 +274,7 @@ def main():
     ## lista de métodos de integração da função .solve_ivp:
     metodosIntegracao:list[str] = ['RK45', 'RK23', 'DOP853', 'Radau', 'BDF', 'LSODA']
     ## definindo método de integração da função .solve_ivp:
-    metodoIntegracao:str = metodosIntegracao[3]
+    metodoIntegracao:str = metodosIntegracao[2]
     ## definindo as tolerâncias relativa e absoluta usada na função .solve_ivp:
     rtol:float = 1e-8
     atol:float = 1e-10    
@@ -283,8 +283,8 @@ def main():
     paras = lm.Parameters()
     paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
     paras.add('mumax_X', value=0.05, min=0.02, max=0.8) #dia-1
-    paras.add('K_S',     value=125, min=40.3, max=403.) #kgDQO_S/m3
-    paras.add('Y_X_S',   value=0.13, min=0.01, max=0.2) #kgDQO_X/kgDQO_S
+    paras.add('K_S',     value=125.0, min=40.3, max=403.) #kgDQO_S/m3
+    paras.add('Y_X_S',   value=0.07, min=0.01, max=1-0.877) #kgDQO_X/kgDQO_S
     paras.add('Y_P_S',   value=0.877, vary=False) #kgDQO_P/kgDQO_S
     paras.add('k_dec',   value=0.001755, min=0.0005, max=0.035) #dia-1
     paras.add('D', value=0., vary=False) #dia-1   
