@@ -5,7 +5,7 @@ import numpy as np
 import scipy.integrate
 import tools
 
-### Gouvea 1
+### Gouveia 1
 def model(t, x, params:lm.Parameters):
     
      SA = x[0] #kg_DQO_S/m^3
@@ -19,21 +19,21 @@ def model(t, x, params:lm.Parameters):
           Kr = params['Kr'].value # dia^-1
           K2 = params['K2'].value # dia^-1
           K3 = params['K3'].value # dia^-1
-          alfa = params['alfa'].value # [-]
+          alpha = params['alpha'].value # [-]
         
     
      except KeyError:
-         S_max, Kl, Kr, K2, K3, alfa = params
+         S_max, Kl, Kr, K2, K3, alpha = params
     
      # Operação em batelada
      # Definindo balanço de componentes:
-     dSA_dt = - (alfa * Kr * SA + (1 - alfa) * Kl * SA)
-     dSB_dt = (1 - alfa) * ((Kl * SA) - (K2 * SB))
-     dSC_dt = (K2 * SB * (1 - alfa)) + (alfa * Kr * SA) - (K3 * SC)
+     dSA_dt = - (alpha * Kr * SA + (1 - alpha) * Kl * SA)
+     dSB_dt = (1 - alpha) * ((Kl * SA) - (K2 * SB))
+     dSC_dt = (K2 * SB * (1 - alpha)) + (alpha * Kr * SA) - (K3 * SC)
 
      return [dSA_dt, dSB_dt, dSC_dt]
 
-def wrapper_model(t, x, params, tsolve, square, data):
+def wrapper_model(t, x, params, tsolve, Rsquare, data):
      
      try:
           ##parâmetros do modelo
@@ -42,10 +42,10 @@ def wrapper_model(t, x, params, tsolve, square, data):
           Kr = params['Kr'].value # dia^-1
           K2 = params['K2'].value # dia^-1
           K3 = params['K3'].value # dia^-1
-          alfa = params['alfa'].value # [-]
+          alpha = params['alpha'].value # [-]
     
      except KeyError:
-         S_max, Kl, Kr, K2, K3, alfa = params
+         S_max, Kl, Kr, K2, K3, alpha = params
          
      ## Resolução do sistema de EDOs:
      sim = scipy.integrate.solve_ivp(model, t, x, 'Radau', args=[params], t_eval=tsolve)
@@ -57,7 +57,7 @@ def wrapper_model(t, x, params, tsolve, square, data):
           sD[i] = S_max - sA[i] - sB[i] - sC[i]
      
      ## Calculo do R^2:
-     if (square == True):
+     if (Rsquare == True):
           R2_S = tools.r2(np.array(data[0]['concentração']), sA)
           R2_P = tools.r2(np.array(data[1]['concentração']), sD)
           return [R2_S, R2_P]
@@ -66,9 +66,9 @@ def wrapper_model(t, x, params, tsolve, square, data):
           sol = np.array([sA, sB, sC, sD, sim.t])
           return sol
 
-### Gouvea 2
+### Gouveia 2
        
-def modelo_analitico(params, t, Rsquare, data):
+def modelo_analitico(t, params, Rsquare, data):
    def SA(t, S_0, alpha, kr, kl):
       Sa = S_0*(alpha*np.exp(-kr*t) + (1-alpha)*np.exp(-kl*t))
       return Sa
@@ -92,24 +92,30 @@ def modelo_analitico(params, t, Rsquare, data):
           Kr = params['Kr'].value # dia^-1
           K2 = params['K2'].value # dia^-1
           K3 = params['K3'].value # dia^-1
-          alfa = params['alfa'].value # [-]
+          alpha = params['alpha'].value # [-]
     
    except KeyError:
-         S_max, Kl, Kr, K2, K3, alfa = params
+         S_max, Kl, Kr, K2, K3, alpha = params
    
-   sim_sa = SA(t, S_max, alfa, Kr, Kl)
-   sim_sb = SB(t, S_max, alfa, Kl, K2)
-   sim_sc = SC(t, S_max, alfa, Kl, Kr, K2, K3)
-   sim_sd = SD(t, S_max, Kl, Kr, K2, K3, alfa)
+   sim_sa = SA(t, S_max, alpha, Kr, Kl)
+   sim_sb = SB(t, S_max, alpha, Kl, K2)
+   sim_sc = SC(t, S_max, alpha, Kl, Kr, K2, K3)
+   sim_sd = SD(t, S_max, Kl, Kr, K2, K3, alpha)
    
-   if(Rsquare == True):
-      R2_S = tools.r2(np.array(data[0]['concentração']), sim_sa)
-      R2_P = tools.r2(np.array(data[1]['concentração']), sim_sd)
-      return [R2_S, R2_P]
+   if (Rsquare == True):
+      if np.shape(data)[0] == 3:
+         R2_S = tools.r2(np.array(data[0]['concentração']), sim_sa)
+         R2_I = tools.r2(np.array(data[1]['concentração']), sim_sc)
+         R2_P = tools.r2(np.array(data[2]['concentração']), sim_sd)
+         return [R2_S, R2_I, R2_P]
+      else:
+         R2_S = tools.r2(np.array(data[0]['concentração']), sim_sa)
+         R2_P = tools.r2(np.array(data[1]['concentração']), sim_sd)
+         return [R2_S, R2_P]
    else:      
       return [sim_sa, sim_sb, sim_sc, sim_sd]
 
-### Gouvea 3
+### Gouveia 3
 
 def model_3(t, x, params):
    
@@ -125,18 +131,18 @@ def model_3(t, x, params):
    except KeyError:
          sAr_0, sAl_0, kl, kr, k2, k3 = params
          
-   if t >= 0 and t < 0.001:
-        sAr = sAr_0
-        sAl = sAl_0
-        sB = 0
-        sC = 0
+   # if t >= 0 and t < 0.001:
+   #      sAr = sAr_0
+   #      sAl = sAl_0
+   #      sB = 0
+   #      sC = 0
         
-   else:
-        sAr = x[0]
-        sAl = x[1]
-        sB = x[2]
-        sC = x[3]
-        
+   # else:
+   sAr = x[0]
+   sAl = x[1]
+   sB =  x[2]
+   sC =  x[3]
+   
    dsAr_dt = -kr * sAr
    dsAl_dt = -kl * sAl
    dsB_dt  =  kl * sAl - k2 * sB
@@ -144,7 +150,7 @@ def model_3(t, x, params):
     
    return [dsAr_dt, dsAl_dt, dsB_dt, dsC_dt] 
 
-def wrapper_model_2(t, x, params, t_compute, square, data):
+def wrapper_model_2(t, x, params, t_compute, Rsquare, data):
    sim = scipy.integrate.solve_ivp(model_3, t, x, 'Radau', t_eval=t_compute, args=[params])
    sAr, sAl, sB, sC = sim.y
    sD = (params['sAr_0'].value + params['sAl_0'].value) - (sAr + sAl + sB + sC)
@@ -152,11 +158,17 @@ def wrapper_model_2(t, x, params, t_compute, square, data):
    sol =  np.array([sAr, sAl, sB, sC, sD, sim.t, sAt])
     
    ## Calculo do R^2:
-   if (square == True):
-      sAt = sAr + sAl
-      R2_S = tools.r2(np.array(data[0]['concentração']), sAt)
-      R2_P = tools.r2(np.array(data[1]['concentração']), sD)
-      return [R2_S, R2_P]
-     
+   if (Rsquare == True):
+      if np.shape(data)[0] == 3:
+         sAt = sAr + sAl
+         R2_S = tools.r2(np.array(data[0]['concentração']), sAt)
+         R2_I = tools.r2(np.array(data[1]['concentração']), sC)
+         R2_P = tools.r2(np.array(data[2]['concentração']), sD)
+         return [R2_S, R2_I, R2_P ]
+      else:
+         R2_S = tools.r2(np.array(data[0]['concentração']), sAt)
+         R2_P = tools.r2(np.array(data[1]['concentração']), sD)
+         return [R2_S, R2_P]
+      
    else:
       return sol
