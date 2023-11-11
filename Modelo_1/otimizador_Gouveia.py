@@ -67,3 +67,22 @@ def obj_wrapper_model_2_SPI (params, data, t, x, t_compute):
     res_total = np.sqrt(np.square(res_SA)) + np.sqrt(np.square(res_SD)) + np.sqrt(np.square(res_SC))
     
     return res_total
+
+def obj_model_monod_P (params, data, t, x, t_compute):
+    
+    sim = models.model_monod(t, x, params, t_compute, Rsquare=False, data=None)
+    
+    res_P = data[1]['concentração'] - sim[2]
+    
+    return res_P
+
+def obj_model_monod_SP (params, data, t, x, t_compute):
+    
+    sim = models.model_monod(t, x, params, t_compute, Rsquare=False, data=None)
+    
+    res_S = data[0]['concentração'] - sim[0]   
+    res_P = data[1]['concentração'] - sim[2]
+    
+    res_total = np.sqrt(np.square(res_S)) + np.sqrt(np.square(res_P))
+    
+    return res_total
