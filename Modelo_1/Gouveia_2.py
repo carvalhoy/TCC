@@ -11,7 +11,7 @@ parametrosDadosXlsx:list[int] = [0, 240, 25, 3]
 data_fit_P = tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_produto.csv", parametrosDadosXlsx)
 data_fit_S = tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_substrato.csv", parametrosDadosXlsx)
 data_fit_I = tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_AGV.csv", parametrosDadosXlsx)
-data = [data_fit_S, data_fit_P]
+data = [data_fit_S,  data_fit_P]
 t = data_fit_P['tempo']
 t_plot = np.linspace(min(t), max(t), 1000)
 
@@ -32,7 +32,7 @@ plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D  exp.$')
 plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A  exp.$')
 plt.plot(t_plot, resolucao[0], 'b', label=f'$S_A (R^2={R2_S_P[0]:.3f})$')
 plt.plot(t_plot, resolucao[1], 'y', label='$S_B$')
-plt.plot(t_plot, resolucao[2], 'g', label='$S_C$')
+plt.plot(t_plot, resolucao[2], 'g', label=f'$S_C$')
 plt.plot(t_plot, resolucao[3], 'r', label=f'$S_D (R^2={R2_S_P[1]:.3f})$')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)
@@ -60,13 +60,13 @@ sim_ajuste_P = models.modelo_analitico(t_plot, res_otim_P.params, False, None) #
     
 R2_S_P_ajuste_P = models.modelo_analitico(t, res_otim_P.params, True, data)
 
-# Plotagem dos resultados da estimação de parâmetros de SPI:
-plt.title('Simulação do ajuste de P')
-plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D  exp.$')
-plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A  exp.$')
+# Plotagem dos resultados da estimação de parâmetros de P:
+# plt.title('Simulação do ajuste de P')
+plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D$ exp.')
+plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A$ exp.')
 plt.plot(t_plot, sim_ajuste_P[0], 'b', label=f'$S_A (R^2={R2_S_P_ajuste_P[0]:.3f})$')
 plt.plot(t_plot, sim_ajuste_P[1], 'y', label='$S_B$')
-plt.plot(t_plot, sim_ajuste_P[2], 'g', label='$S_C$')
+plt.plot(t_plot, sim_ajuste_P[2], 'g', label=f'$S_C$')
 plt.plot(t_plot, sim_ajuste_P[3], 'r', label=f'$S_D (R^2={R2_S_P_ajuste_P[1]:.3f})$')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)
@@ -95,12 +95,12 @@ sim_ajuste_SP = models.modelo_analitico(t_plot, res_otim_SP.params, False, None)
 R2_S_P_ajuste_SP = models.modelo_analitico(t, res_otim_SP.params, True, data)
 
 # Plotagem dos resultados da estimação de parâmetros:
-plt.title('Simulação do ajuste multivariável SP')
-plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D  exp.$')
-plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A  exp.$')
+# plt.title('Simulação do ajuste multivariável SP')
+plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D$ exp.')
+plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A$ exp.')
 plt.plot(t_plot, sim_ajuste_SP[0], 'b', label=f'$S_A (R^2={R2_S_P_ajuste_SP[0]:.3f})$')
 plt.plot(t_plot, sim_ajuste_SP[1], 'y', label='$S_B$')
-plt.plot(t_plot, sim_ajuste_SP[2], 'g', label='$S_C$')
+plt.plot(t_plot, sim_ajuste_SP[2], 'g', label=f'$S_C$')
 plt.plot(t_plot, sim_ajuste_SP[3], 'r', label=f'$S_D (R^2={R2_S_P_ajuste_SP[1]:.3f})$')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)
@@ -113,7 +113,7 @@ plt.show()
 # Estimação multivariável de parâmetros SPI:
 ###parametros iniciais segundo Gouveia 
 paras = lm.Parameters()
-paras.add('S_max', value=36.55, min=0, max=38.1625)
+paras.add('S_max', value=36.55, min=0)
 paras.add('Kl', value=1.84702752e-02/2, min=0) 
 paras.add('Kr', value=1.84702752e-02, min=0) 
 paras.add('K2', value = 1.84702752e-02 * 2, min=0) 
@@ -130,6 +130,8 @@ paras.add('alpha', value=0.5, min=0) # [-]
 
 
 data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
+
+
 res_otim_SPI = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_SPI, paras, 'leastsq', args=(data_multivar_SPI, t))
 
 print('\nResultado da otimização multivariada SPI\n')
@@ -141,10 +143,10 @@ sim_ajuste_SPI = models.modelo_analitico(t_plot, res_otim_SPI.params, False, Non
 R2_S_P_ajuste_SPI = models.modelo_analitico(t, res_otim_SPI.params, True, data_multivar_SPI)
 
 # Plotagem dos resultados da estimação de parâmetros:
-plt.title('Simulação do ajuste multivariável SPI')
-plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A  exp.$')
-plt.plot(t, data_fit_I['concentração'], 'gx', label=f'$S_C  exp.$')
-plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D  exp.$')
+# plt.title('Simulação do ajuste multivariável SPI')
+plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A$ exp.')
+plt.plot(t, data_fit_I['concentração'], 'gx', label=f'$S_C$ exp.')
+plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D$ exp.')
 plt.plot(t_plot, sim_ajuste_SPI[0], 'b', label=f'$S_A (R^2={R2_S_P_ajuste_SPI[0]:.3f})$')
 plt.plot(t_plot, sim_ajuste_SPI[1], 'y', label='$S_B$')
 plt.plot(t_plot, sim_ajuste_SPI[2], 'g', label=f'$S_C (R^2={R2_S_P_ajuste_SPI[1]:.3f})$')

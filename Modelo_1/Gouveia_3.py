@@ -48,8 +48,8 @@ plt.show()
 # Estimação de parametros:
 
 paras = lm.Parameters()
-paras.add('sAr_0', value = 38.1625*0.5,        min=0., max=38.1625)
-paras.add('sAl_0', value = 38.1625*(1-0.5),    min=0., max=38.1625)
+paras.add('sAr_0', value = 38.1625*0.5,        min=0.)
+paras.add('sAl_0', value = 38.1625*(1-0.5),    min=0.)
 paras.add('kl',    value = 1.84702752e-02/2,   min=0.) #dia-1
 paras.add('kr',    value = 1.84702752e-02,     min=0.) #kgDQO_P/kgDQO_S
 paras.add('k2',    value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
@@ -117,16 +117,16 @@ sAr, sAl, sB, sC, sD, t_sim, sAt = sim_ajuste_multivar
 R2_S_P_ajuste_multivar = models.wrapper_model_2([0, 240], condicoes_init_otim_multivar_SP, res_otimizacao_multivar_SP.params, t, True, data_multivar_SP)
 
 # Plotagem do resultado da estimação de parametros:
-plt.title('Simulação do ajuste multivariável SP')
+# plt.title('Simulação do ajuste multivariável SP')
 plt.plot(t_sim, sAr, 'c', label='$S_{A,R}$')
 plt.plot(t_sim, sAl, 'aquamarine', label='$S_{A,L}$')
 plt.plot(t_sim, sAt, 'b', label=f'$S_A (R^2={R2_S_P_ajuste_multivar[0]:.3f})$')
 plt.plot(t_sim, sB, 'y', label='$S_B$')
 plt.plot(t_sim, sC, 'g', label=f'$S_C$')
 plt.plot(t_sim, sD, 'r', label=f'$S_D (R^2={R2_S_P_ajuste_multivar[1]:.3f})$')
-plt.plot(t, data_fit_S['concentração'], 'bx', label='$S_A exp.$')
+plt.plot(t, data_fit_S['concentração'], 'bx', label='$S_A$ exp.')
 # plt.plot(t, data_fit_I['concentração'], 'gx', label='$S_C exp.$')
-plt.plot(t, data_fit_P['concentração'], 'rx', label='$S_D exp.$')
+plt.plot(t, data_fit_P['concentração'], 'rx', label='$S_D$ exp.')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)
 plt.ylabel('$kg_{DQO}/m^3$', fontsize=15)

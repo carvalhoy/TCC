@@ -26,11 +26,11 @@ def obj_modelo_analitico_SP (params, data, t):
 def obj_modelo_analitico_SPI (params, data, t):
     
     sim = models.modelo_analitico(t, params, Rsquare=False, data=None)
-    
+       
     res_sa = data[0]['concentração'] - sim[0]
     res_sc = data[1]['concentração'] - sim[2]
     res_sd = data[2]['concentração'] - sim[3]
-    
+       
     res_total = np.sqrt(np.square(res_sa)) + np.sqrt(np.square(res_sc)) + np.sqrt(np.square(res_sd))
     
     return res_total
