@@ -76,7 +76,7 @@ sAr, sAl, sB, sC, sD, t_sim, sAt = sim_ajuste
 R2_S_P_ajuste = models.wrapper_model_2([0, 240], condicoes_iniciais_otimizadas, res_otimizacao.params, t, True, data)
 
 # Plotagem do resultado da estimação de parametros:
-plt.title('Simulação do ajuste de P')
+# plt.title('Simulação do ajuste de P')
 plt.plot(t_sim, sAr, 'c', label='$S_{A,R}$')
 plt.plot(t_sim, sAl, 'aquamarine', label='$S_{A,L}$')
 plt.plot(t_sim, sAt, 'b', label=f'$S_A (R^2={R2_S_P_ajuste[0]:.3f})$')
@@ -93,12 +93,19 @@ plt.show()
 # Estimação multivariável de parâmetros SP:
 
 paras = lm.Parameters()
-paras.add('sAr_0', value = 38.1625*0.3532,vary=False)
-paras.add('sAl_0', value=38.1625*(1-0.3532),vary=False)
-paras.add('kl', value=1.84702752e-02/2, min=0) #dia-1
-paras.add('kr', value=1.84702752e-02, min=0) #kgDQO_P/kgDQO_S
-paras.add('k2', value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
-paras.add('k3', value=1.84702752e-02 * 3, min=0)
+# paras.add('sAr_0', value = 38.1625*0.5,vary=False)
+# paras.add('sAl_0', value=38.1625*(1-0.5),vary=False)
+# paras.add('kl', value=1.84702752e-02/2, min=0) #dia-1
+# paras.add('kr', value=1.84702752e-02, min=0) #kgDQO_P/kgDQO_S
+# paras.add('k2', value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
+# paras.add('k3', value=1.84702752e-02 * 3, min=0)
+
+paras.add('sAr_0', value = 38.1625*0.5,        min=0.)
+paras.add('sAl_0', value = 38.1625*(1-0.5),    min=0.)
+paras.add('kl',    value = 1.84702752e-02/2,   min=0.) #dia-1
+paras.add('kr',    value = 1.84702752e-02,     min=0.) #kgDQO_P/kgDQO_S
+paras.add('k2',    value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
+paras.add('k3',    value = 1.84702752e-02 * 3, min=0)
 
 condicoes_iniciais = [paras['sAr_0'].value, paras['sAl_0'].value, 0., 0.]
 data_multivar_SP = [data_fit_S, data_fit_P]
@@ -109,7 +116,7 @@ print('\nResultado da otimização multivariada de SP\n')
 lm.report_fit(res_otimizacao_multivar_SP)
 
 ###condição inicial de SC fixada no valor extraído no WebPlotDigitizer
-condicoes_init_otim_multivar_SP = [res_otimizacao_multivar_SP.params['sAr_0'].value, res_otimizacao_multivar_SP.params['sAl_0'].value, 0., 1.27]
+condicoes_init_otim_multivar_SP = [res_otimizacao_multivar_SP.params['sAr_0'].value, res_otimizacao_multivar_SP.params['sAl_0'].value, 0., 0.]
 
 
 sim_ajuste_multivar = models.wrapper_model_2([0, 240], condicoes_init_otim_multivar_SP, res_otimizacao_multivar_SP.params, None, False, None)
@@ -136,16 +143,22 @@ plt.show()
 # Estimação multivariável de parâmetros SPI:
 
 paras = lm.Parameters()
-paras.add('sAr_0', value = 38.1625*0.3532,vary=False)
-paras.add('sAl_0', value=38.1625*(1-0.3532),vary=False)
-paras.add('kl', value=1.84702752e-02/2, min=0) #dia-1
-paras.add('kr', value=1.84702752e-02, min=0) #kgDQO_P/kgDQO_S
-paras.add('k2', value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
-paras.add('k3', value=1.84702752e-02 * 3, min=0)
+# paras.add('sAr_0', value = 38.1625*0.5,vary=False)
+# paras.add('sAl_0', value=38.1625*(1-0.5),vary=False)
+# paras.add('kl', value=1.84702752e-02/2, min=0) #dia-1
+# paras.add('kr', value=1.84702752e-02, min=0) #kgDQO_P/kgDQO_S
+# paras.add('k2', value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
+# paras.add('k3', value=1.84702752e-02 * 3, min=0)
+
+paras.add('sAr_0', value = 38.1625*0.5,        min=0.)
+paras.add('sAl_0', value = 38.1625*(1-0.5),    min=0.)
+paras.add('kl',    value = 1.84702752e-02/2,   min=0.) #dia-1
+paras.add('kr',    value = 1.84702752e-02,     min=0.) #kgDQO_P/kgDQO_S
+paras.add('k2',    value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
+paras.add('k3',    value = 1.84702752e-02 * 3, min=0)
 
 condicoes_iniciais = [paras['sAr_0'].value, paras['sAl_0'].value, 0., 0.]
 data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
-print(np.shape(data_multivar_SPI))
 res_otimizacao_multivar_SPI = lm.minimize(otimizador_Gouveia.obj_wrapper_model_2_SPI, paras, 'least_squares', args=(data_multivar_SPI, [0, 240], condicoes_iniciais, t))
 
 print('\nResultado da otimização multivariada de SPI\n')

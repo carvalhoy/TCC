@@ -174,7 +174,7 @@ def wrapper_model_2(t, x, params, t_compute, Rsquare, data):
       return sol
    
 
-def model_monod (t, x, params, t_compute, Rsquare, data):
+def model_monod_sr (t, x, params, t_compute, Rsquare, data):
    
    def EDO (t, x, params):
       
@@ -204,7 +204,7 @@ def model_monod (t, x, params, t_compute, Rsquare, data):
    
       return [dS_dt, dX_dt, dP_dt]  
    
-   simu = scipy.integrate.solve_ivp(EDO, t, x, 'Radau', t_compute, args=[params], rtol=1e-8, atol = 1e-10   ) 
+   simu = scipy.integrate.solve_ivp(EDO, t, x, 'Radau', t_compute, args=[params], rtol=1e-8, atol = 1e-10) 
  
    t = simu.t
    S, X, P = simu.y
@@ -224,6 +224,87 @@ def model_monod (t, x, params, t_compute, Rsquare, data):
       
    else:
       return sol
+   
+
+
+def model_monod_sr_x (t, x, params, t_compute, Rsquare, data):
+   
+   try:
+      ##parâmetros do modelo
+      S_in = params['S_in'].value #kg_DQO_S/m3
+      umax = params['umax'].value #dia^-1
+      Ks = params['Ks'].value #kg_DQO_S/m^3
+      Yxs = params['Yxs'].value #kg_DQO_X/kg_DQO_S
+      Yps = params['Yps'].value #kg_DQO_P/kg_DQO_S
+      kd = params['kd'].value #dia^-1
+      D = params['D'].value #dia^-1
+      S_0 = params['S_0'].value
+      X_0 = params['X_0'].value   
+      P_0 = params['P_0'].value      
+      
+   except KeyError:
+      S_in, umax, Ks, Yxs, Yps, kd, D, S_0, X_0, P_0 = params
+      
+   
+   def EDOs (t, x):
+      
+      S = x[0] #kg_DQO_S/m^3
+      P = x[1] #kg_DQO_P/m^3      
+         
+     
+      ##definindo a reação:
+      mu = umax*S/(Ks + S) #dia^-1
+      
+      ##definindo a função X(t):
+      X = X_0 + (Yps/umax + 1e-8)*(kd *Ks* np.log(S/S_0 + 1e-8) - (umax - kd)*(S - S_0))
+      
+      dS_dt = (D)*(S_in - S) - (1/Yxs)*mu*X
+      dP_dt = (D)*(-P) + (Yps/Yxs)*mu*X
+   
+      return [dS_dt, dP_dt]
+   
+   # try:
+   #    ##parâmetros do modelo
+   #    S_in = params['S_in'].value #kg_DQO_S/m3
+   #    umax = params['umax'].value #dia^-1
+   #    Ks = params['Ks'].value #kg_DQO_S/m^3
+   #    Yxs = params['Yxs'].value #kg_DQO_X/kg_DQO_S
+   #    Yps = params['Yps'].value #kg_DQO_P/kg_DQO_S
+   #    kd = params['kd'].value #dia^-1
+   #    D = params['D'].value #dia^-1
+   #    S_0 = params['S_0'].value
+   #    X_0 = params['X_0'].value         
+   
+   # except KeyError:
+   #    S_in, umax, Ks, Yxs, Yps, kd, D, S_0, X_0 = params
+   
+   simu = scipy.integrate.solve_ivp(EDOs, t, x, 'Radau', t_compute, rtol=1e-8, atol = 1e-10)
+   t = simu.t
+   S, P = simu.y
+   X = X_0 + (Yps/umax + 1e-8)*(kd *Ks* np.log((S + 1e-8)/(S_0 + 1e-6)) - (umax - kd)*(S - S_0))
+   
+   sol = np.array([S, X, P, t])
+   
+   if (Rsquare == True):
+      if np.shape(data)[0] == 3:
+         R2_S = tools.r2(np.array(data[0]['concentração']), S)
+         R2_X = tools.r2(np.array(data[1]['concentração']), X)
+         R2_P = tools.r2(np.array(data[2]['concentração']), P)
+         return [R2_S, R2_X, R2_P ]
+      else:
+         R2_S = tools.r2(np.array(data[0]['concentração']), S)
+         R2_P = tools.r2(np.array(data[1]['concentração']), P)
+      return [R2_S, R2_P]
+      
+   else:
+      return sol
+   
+   
+   
+   
+   
+   
+    
       
    
     

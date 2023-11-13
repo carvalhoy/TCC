@@ -5,6 +5,7 @@ import lmfit as lm
 import tools
 import models
 import otimizador_Gouveia
+import random
 
 # Dados experimentais:
 parametrosDadosXlsx:list[int] = [0, 240, 25, 3]
@@ -16,26 +17,30 @@ t_exp = data_fit_P['tempo']
 
 paras = lm.Parameters()
 paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
-paras.add('umax', value=0.05, min=0.02, max=0.8 ) #dia-1
-paras.add('Ks', value=125.0, min=40.3, max=403.) #kgDQO_S/m3
-paras.add('Yxs', value=0.07, min=0.01, max=1-0.877) #kgDQO_X/kgDQO_S
+paras.add('umax', value=0.5, min=0., max=30 ) #dia-1
+paras.add('Ks', value=0.4, min=0., max=9) #kgDQO_S/m3
+paras.add('Yxs', 0.05, min=0., max=0.1) #kgDQO_X/kgDQO_S
 paras.add('Yps', value=0.877, vary=False) #kgDQO_P/kgDQO_S
-paras.add('kd',value=0.001755, min=0.0005, max=0.035) #dia-1
+paras.add('kd',value=0.2, min=0.) #dia-1
 paras.add('D', value=0., vary=False) #dia-1
+paras.add('S_0', value=38.2, vary=False)
+paras.add('X_0', value=25.2, vary=False)
+paras.add('P_0', value=0.2,  vary=False)
 
 
-condicoes_iniciais = [38.2, 25.2, 0.]
-simulação = models.model_monod_sr ([0, 240], condicoes_iniciais, paras, None, False, None)
+
+condicoes_iniciais = [paras['S_0'].value, paras['P_0'].value]
+simulação = models.model_monod_sr_x([0, 240], condicoes_iniciais, paras, None, False, None)
 simu_S, simu_X, simu_P, simu_t = simulação
 
 
-r2_simu = models.model_monod_sr ([0, 240], condicoes_iniciais, paras, t_exp, True, data)
+r2_simu = models.model_monod_sr_x([0, 240], condicoes_iniciais, paras, t_exp, True, data)
 
 plt.plot(t_exp, data_fit_P['concentração'], 'rx', label='P exp.')
 plt.plot(t_exp, data_fit_S['concentração'], 'bx', label='S exp.')
 plt.plot(simu_t, simu_S, 'b', label=f'S $(R^2={r2_simu[0]:.3f})$')
-plt.plot(simu_t, simu_X, 'g', label=f'X $(R^2={r2_simu[1]:.3f})$')
-plt.plot(simu_t, simu_P, 'r', label=f'P')
+plt.plot(simu_t, simu_X, 'g', label=f'X')
+plt.plot(simu_t, simu_P, 'r', label=f'P $(R^2={r2_simu[1]:.3f})$')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)
 plt.ylabel('$kg_{DQO}/m^3$', fontsize=15)
@@ -43,22 +48,23 @@ plt.show()
 
 # Estimação de parâmetros:
 
-sol_otim_P = lm.minimize(otimizador_Gouveia.obj_model_monod_P, paras, 'leastsq', args=(data, [0, 240], condicoes_iniciais, t_exp))
+sol_otim_P = lm.minimize(otimizador_Gouveia.obj_P_model_monod_sr_x, paras, 'leastsq', args=(data, [0, 240], condicoes_iniciais, t_exp))
 
 print('\nResultado da otimização para a variável P\n')
 lm.report_fit(sol_otim_P)
 
-simu_ajuste_P = models.model_monod_sr([0, 240], condicoes_iniciais, sol_otim_P.params, None, False, None)
+simu_ajuste_P = models.model_monod_sr_x([0, 240], condicoes_iniciais, sol_otim_P.params, None, False, None)
 simu_S, simu_X, simu_P, simu_t = simu_ajuste_P
 
 
-r2_simu_ajuste_P = models.model_monod_sr ([0, 240], condicoes_iniciais, sol_otim_P.params, t_exp, True, data)
+r2_simu_ajuste_P = models.model_monod_sr_x([0, 240], condicoes_iniciais, sol_otim_P.params, t_exp, True, data)
 
+plt.title('Ajuste P')
 plt.plot(t_exp, data_fit_P['concentração'], 'rx', label='P exp.')
 plt.plot(t_exp, data_fit_S['concentração'], 'bx', label='S exp.')
 plt.plot(simu_t, simu_S, 'b', label=f'S $(R^2={r2_simu_ajuste_P[0]:.3f})$')
-plt.plot(simu_t, simu_X, 'g', label=f'X $(R^2={r2_simu_ajuste_P[1]:.3f})$')
-plt.plot(simu_t, simu_P, 'r', label=f'P')
+plt.plot(simu_t, simu_X, 'g', label=f'X')
+plt.plot(simu_t, simu_P, 'r', label=f'P $(R^2={r2_simu_ajuste_P[1]:.3f})$')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)
 plt.ylabel('$kg_{DQO}/m^3$', fontsize=15)
@@ -66,18 +72,19 @@ plt.show()
 
 # Estimação de parâmetros multivariada:
 
-sol_otim_SP = lm.minimize(otimizador_Gouveia.obj_model_monod_SP, sol_otim_P.params, 'leastsq', args=(data, [0, 240], condicoes_iniciais, t_exp))
+sol_otim_SP = lm.minimize(otimizador_Gouveia.obj_SP_model_monod_sr_x, sol_otim_P.params, 'leastsq', args=(data, [0, 240], condicoes_iniciais, t_exp), nan_policy='omit')
 
 print('\nResultado da otimização multivariada SP\n')
 
 lm.report_fit(sol_otim_SP)
 
-simu_ajuste_SP = models.model_monod_sr([0, 240], condicoes_iniciais, sol_otim_SP.params, None, False, None)
+simu_ajuste_SP = models.model_monod_sr_x([0, 240], condicoes_iniciais, sol_otim_SP.params, None, False, None)
 simu_S, simu_X, simu_P, simu_t = simu_ajuste_SP
 
 
-r2_simu_ajuste_SP = models.model_monod_sr ([0, 240], condicoes_iniciais, sol_otim_P.params, t_exp, True, data)
+r2_simu_ajuste_SP = models.model_monod_sr_x ([0, 240], condicoes_iniciais, sol_otim_SP.params, t_exp, True, data)
 
+plt.title('Ajuste SP')
 plt.plot(t_exp, data_fit_P['concentração'], 'rx', label='P exp.')
 plt.plot(t_exp, data_fit_S['concentração'], 'bx', label='S exp.')
 plt.plot(simu_t, simu_S, 'b', label=f'S $(R^2={r2_simu_ajuste_SP[0]:.3f})$')
