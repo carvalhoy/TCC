@@ -76,6 +76,16 @@ def obj_model_monod_P (params, data, t, x, t_compute):
     
     return res_P
 
+
+def obj_model_monod_S (params, data, t, x, t_compute):
+    
+    sim = models.model_monod_sr(t, x, params, t_compute, Rsquare=False, data=None)
+    
+    res_S = data[0]['concentração'] - sim[0]
+    
+    return res_S
+
+
 def obj_model_monod_SP (params, data, t, x, t_compute):
     
     sim = models.model_monod_sr(t, x, params, t_compute, Rsquare=False, data=None)
@@ -105,3 +115,27 @@ def obj_SP_model_monod_sr_x (params, data, t, x, t_compute):
     res_total = np.sqrt(np.square(res_S)) + np.sqrt(np.square(res_P))
     
     return res_total
+
+
+def obj_P_monod_hyd (params, data, t, x, t_compute):
+    
+    sim = models.monod_hyd(t, x, params, t_compute, Rsquare=False, data=None)
+    
+    res_P = data[1]['concentração'] - sim[4]
+    
+    return res_P
+
+
+def obj_SP_monod_hyd (params, data, t, x, t_compute):
+    
+    sim = models.monod_hyd(t, x, params, t_compute, Rsquare=False, data=None)
+    
+    res_S = data[0]['concentração'] - sim[0]
+    res_P = data[1]['concentração'] - sim[4]
+    
+    res_total = np.sqrt(np.square(res_S)) + np.sqrt(np.square(res_P))
+    
+    return res_total
+
+
+    

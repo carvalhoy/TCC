@@ -301,6 +301,63 @@ def model_monod_sr_x (t, x, params, t_compute, Rsquare, data):
    
    
    
+def monod_hyd (t, x, params, t_compute, Rsquare, data):
+   
+   def EDOS_hyd (t, x, params):
+      
+      Sb = x[0]
+      Sl = x[1]
+      X  = x[2]
+      P  = x[3]
+      
+      try:
+      ##parâmetros do modelo
+         S_in = params['S_in'].value #kg_DQO_S/m3
+         umax = params['umax'].value #dia^-1
+         Ks = params['Ks'].value #kg_DQO_S/m^3
+         Yxs = params['Yxs'].value #kg_DQO_X/kg_DQO_S
+         Yps = params['Yps'].value #kg_DQO_P/kg_DQO_S
+         kd = params['kd'].value #dia^-1
+         D = params['D'].value #dia^-1
+         kh = params['kh'].value #dia^-1
+         alpha = params['alpha'].value     
+         
+      except KeyError:
+         S_in, umax, Ks, Yxs, Yps, kd, D, kh, alpha = params
+         
+      # definindo cinética da reação de consumo de substrato:
+      mu = umax*Sb/(Sb + Ks)
+      
+      dSb_dt = D*(S_in*alpha - Sb) - (mu/Yxs)*X + kh*Sl
+      dSl_dt = D*(S_in*(1-alpha) - Sl) - kh*Sl
+      dX_dt  = X*(mu - kd - D)
+      dP_dt  = -D*P + (Yps/Yxs)*mu*X
+      
+      return [dSb_dt, dSl_dt, dX_dt, dP_dt]
+   
+   simu = scipy.integrate.solve_ivp(EDOS_hyd, t, x, 'Radau', t_compute, args=[params])
+   Sb, Sl, X, P = simu.y
+   S = Sb + Sl
+   t_sim = simu.t
+   
+   sol = np.array([S, Sb, Sl, X, P, t_sim])
+   
+   if (Rsquare == True):
+      if np.shape(data)[0] == 3:
+         R2_S = tools.r2(np.array(data[0]['concentração']), S)
+         R2_X = tools.r2(np.array(data[1]['concentração']), X)
+         R2_P = tools.r2(np.array(data[2]['concentração']), P)
+         return [R2_S, R2_X, R2_P ]
+      else:
+         R2_S = tools.r2(np.array(data[0]['concentração']), S)
+         R2_P = tools.r2(np.array(data[1]['concentração']), P)
+      return [R2_S, R2_P]
+      
+   else:
+      return sol
+      
+   
+   
    
    
    
