@@ -12,7 +12,7 @@ data_fit_P = tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_produto.csv", paramet
 data_fit_S = tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_substrato.csv", parametrosDadosXlsx)
 data_fit_I = tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_AGV.csv", parametrosDadosXlsx)
 
-new_data_imtrying = pd.read_csv("../xlsx1/dados_biogás_cumulativo_rao.csv", header=None, names=['tempo', 'concentração'])
+new_data_imtrying = pd.read_csv("../xlsx1/dados_biogas_cumulativo_rao.csv", header=None, names=['tempo', 'concentração'])
 
 new_data_imtrying['tempo'] = round(new_data_imtrying['tempo'], 4) 
 
