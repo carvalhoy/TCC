@@ -16,7 +16,7 @@ t_exp = data_fit_P['tempo']
 
 paras = lm.Parameters()
 paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
-paras.add('umax', value=0.05, min=0.047, max=1.47) #dia-1
+paras.add('umax', value=0.05, min=0.02, max=1.47) #dia-1
 paras.add('Ks', value=6.0, min=0) #kgDQO_S/m3
 paras.add('Yxs', value=0.07, min=0.0) #kgDQO_X/kgDQO_S
 paras.add('Yps', value=0.934, vary=False) #kgDQO_P/kgDQO_S
