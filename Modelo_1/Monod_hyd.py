@@ -54,6 +54,8 @@ plt.show()
 sol_otim_P = lm.minimize(otimizador_Gouveia.obj_P_monod_hyd, paras, 'leastsq', args=(data, [0, 240], condicoes_iniciais, t_exp))
 
 print('\nResultado da otimização para a variável P\n')
+
+print(f'Valor da função objetivo para os parâmetros otimizados: {sol_otim_P.residual}\n')
 lm.report_fit(sol_otim_P)
 
 simu_ajuste_P = models.monod_hyd([0, 240], condicoes_iniciais, sol_otim_P.params, None, False, None)
@@ -84,6 +86,7 @@ sol_otim_SP = lm.minimize(otimizador_Gouveia.obj_SP_monod_hyd, sol_otim_P.params
 
 print('\nResultado da otimização multivariada SP\n')
 
+print(f'Valor da função objetivo para os parâmetros otimizados: {sol_otim_SP.residual}\n')
 lm.report_fit(sol_otim_SP)
 
 simu_ajuste_SP = models.monod_hyd([0, 240], condicoes_iniciais, sol_otim_SP.params, None, False, None)
@@ -106,47 +109,5 @@ plt.show()
 
 
 
-###### Estimação de parâmetro com dados extraidos de Rao
-
-new_data_imtrying = pd.read_csv("../xlsx1/dados_biogás_cumulativo_rao.csv", header=None, names=['tempo', 'concentração'])
-
-new_data_imtrying['tempo'] = round(new_data_imtrying['tempo'], 4) 
-
-data_rao = [new_data_imtrying, new_data_imtrying]
-
-paras = lm.Parameters()
-paras.add('S_in', value=0., vary=False) #kgDQO_S/m3
-paras.add('umax', value=0.05, vary=False) #dia-1
-paras.add('Ks', value=4, vary=False) #kgDQO_S/m3
-paras.add('Yxs', value=0.07, min=0.0, max=1-0.877) #kgDQO_X/kgDQO_S
-paras.add('Yps', value=0.877, min=0) #kgDQO_P/kgDQO_S
-paras.add('kd',value=0.001755, min=0.0) #dia-1
-paras.add('D', value=0., vary=False) #dia-1
-paras.add('kh', value=0.0133, min=0)
-paras.add('alpha', value=0, vary=False)
-
-res_otim_P_rao = lm.minimize(otimizador_Gouveia.obj_P_monod_hyd, paras, 'leastsq', args=(data_rao, [0, 240], condicoes_iniciais, new_data_imtrying['tempo']), nan_policy='omit')
-print('\nResultado da otimização de P\n')
-
-lm.report_fit(res_otim_P_rao)
-
-simu_ajuste_P = models.monod_hyd([0, 240], condicoes_iniciais, res_otim_P_rao.params, None, False, None)
-    
-R2_S_P_ajuste_P = models.monod_hyd([0, 240], condicoes_iniciais, res_otim_P_rao.params, new_data_imtrying['tempo'], True, data_rao)
-R2S_ajusteP = models.monod_hyd([0, 240], condicoes_iniciais, res_otim_P_rao.params, t_exp, True, data)
-
-# Plotagem dos resultados da estimação de parâmetros de P:
-# plt.title('Simulação do ajuste de P')
-plt.plot(t_exp, data_fit_S['concentração'], 'bx', label='S exp.')
-plt.plot(t_exp, data_fit_P['concentração'], 'rx', label='P exp.')
-plt.plot(simu_t, simu_S, 'b', label=f'S $(R^2={R2S_ajusteP[0]:.3f})$')
-plt.plot(simu_t, simu_Sb, 'c', label='$S_B$')
-plt.plot(simu_t, simu_Sl, 'aquamarine', label='$S_L$')
-plt.plot(simu_t, simu_X, 'g', label=f'X')
-plt.plot(simu_t, simu_P, 'r', label=f'P $(R^2={R2_S_P_ajuste_P[1]:.3f})$')
-plt.legend(fontsize=15)
-plt.xlabel('t - dias', fontsize=15)
-plt.ylabel('$kg_{DQO}/m^3$', fontsize=15)
-plt.show()
 
 

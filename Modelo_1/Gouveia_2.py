@@ -54,6 +54,7 @@ paras.add('alpha', value=0.5, min=0) # [-]
 res_otim_P = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_P, paras, 'leastsq', args=(data_fit_P['concentração'], data_fit_P['tempo']), nan_policy='omit')
 print('\nResultado da otimização de P\n')
 
+print(f'Valor da função objetivo para parâmetros otimizados: {res_otim_P.residual}\n')
 lm.report_fit(res_otim_P)
 
 sim_ajuste_P = models.modelo_analitico(t_plot, res_otim_P.params, False, None) #[sA, Sb, Sc, Sd]
@@ -88,6 +89,7 @@ res_otim_SP = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_SP, paras, 'le
 
 print('\nResultado da otimização multivariada de SP\n')
 
+print(f'Valor da função objetivo para parâmetros otimizados: {res_otim_SP.residual}\n')
 lm.report_fit(res_otim_SP)
 
 sim_ajuste_SP = models.modelo_analitico(t_plot, res_otim_SP.params, False, None) #[sA, Sb, Sc, Sd]
@@ -136,6 +138,7 @@ res_otim_SPI = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_SPI, paras, '
 
 print('\nResultado da otimização multivariada SPI\n')
 
+print(f'Valor da função objetivo para parâmetros otimizados: {res_otim_SPI.residual}\n')
 lm.report_fit(res_otim_SPI)
 
 sim_ajuste_SPI = models.modelo_analitico(t_plot, res_otim_SPI.params, False, None) #[sA, Sb, Sc, Sd]
