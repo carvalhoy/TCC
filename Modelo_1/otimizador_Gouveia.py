@@ -37,7 +37,7 @@ def obj_modelo_analitico_SPI (params, data, t):
     
 
 def obj_wrapper_model_2 (params, data, t, x, t_compute):
-    
+    print(params.valuesdict())
     sim = models.wrapper_model_2(t, x, params, t_compute, Rsquare=False, data=None)
     res = data - sim[4]
    #  res_norm = res/(max(data) - min(data))
@@ -138,4 +138,20 @@ def obj_SP_monod_hyd (params, data, t, x, t_compute):
     return res_total
 
 
+def obj_monod_hyd_alt (params, data, t, x, t_compute):
     
+    print(params.valuesdict())
+    sAr_0 = x[0]
+    sAl_0 = x[1]
+    sB_0  = x[2]
+    sC_0  = x[3]
+    P_0   = x[5]
+    sim = models.monod_hyd_alt(t, [sAr_0, sAl_0, sB_0, sC_0, params['X_0'].value, P_0], params, t_compute, Rsquare=False, data=None)
+    
+    res_S = data[0]['concentração'] - sim[0]
+    res_I = data[1]['concentração'] - sim[4]
+    res_P = data[2]['concentração'] - sim[6]
+    
+    res_total = np.sqrt(np.square(res_S)) + np.sqrt(np.square(res_I)) + np.sqrt(np.square(res_P)) 
+    
+    return res_total

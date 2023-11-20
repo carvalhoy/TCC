@@ -28,6 +28,14 @@ resolucao = models.modelo_analitico(t_plot, paras, False, None) #[sA, Sb, Sc, Sd
     
 R2_S_P = models.modelo_analitico(t, paras, True, data)
 
+data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
+
+obj = otimizador_Gouveia.obj_modelo_analitico_SPI(paras, data_multivar_SPI, t)
+
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(obj))}\n')
+
+
+
 plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D  exp.$')
 plt.plot(t, data_fit_S['concentração'], 'bx', label=f'$S_A  exp.$')
 plt.plot(t_plot, resolucao[0], 'b', label=f'$S_A (R^2={R2_S_P[0]:.3f})$')
@@ -54,7 +62,7 @@ paras.add('alpha', value=0.5, min=0) # [-]
 res_otim_P = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_P, paras, 'leastsq', args=(data_fit_P['concentração'], data_fit_P['tempo']), nan_policy='omit')
 print('\nResultado da otimização de P\n')
 
-print(f'Valor da função objetivo para parâmetros otimizados: {res_otim_P.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otim_P.residual))}\n')
 lm.report_fit(res_otim_P)
 
 sim_ajuste_P = models.modelo_analitico(t_plot, res_otim_P.params, False, None) #[sA, Sb, Sc, Sd]
@@ -89,7 +97,7 @@ res_otim_SP = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_SP, paras, 'le
 
 print('\nResultado da otimização multivariada de SP\n')
 
-print(f'Valor da função objetivo para parâmetros otimizados: {res_otim_SP.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otim_SP.residual))}\n')
 lm.report_fit(res_otim_SP)
 
 sim_ajuste_SP = models.modelo_analitico(t_plot, res_otim_SP.params, False, None) #[sA, Sb, Sc, Sd]
@@ -138,7 +146,7 @@ res_otim_SPI = lm.minimize(otimizador_Gouveia.obj_modelo_analitico_SPI, paras, '
 
 print('\nResultado da otimização multivariada SPI\n')
 
-print(f'Valor da função objetivo para parâmetros otimizados: {res_otim_SPI.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otim_SPI.residual))}\n')
 lm.report_fit(res_otim_SPI)
 
 sim_ajuste_SPI = models.modelo_analitico(t_plot, res_otim_SPI.params, False, None) #[sA, Sb, Sc, Sd]

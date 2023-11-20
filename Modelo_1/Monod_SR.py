@@ -59,7 +59,7 @@ sol_otim_P = lm.minimize(otimizador_Gouveia.obj_model_monod_P, paras, 'leastsq',
 
 print('\nResultado da otimização para a variável P\n')
 
-print(f'Valor da função objetivo para os parâmetros otimizados: {sol_otim_P.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(sol_otim_P.residual))}\n')
 lm.report_fit(sol_otim_P)
 
 simu_ajuste_P = models.model_monod_sr([0, 240], condicoes_iniciais, sol_otim_P.params, None, False, None)
@@ -84,7 +84,7 @@ plt.show()
 
 paras_SP = lm.Parameters()
 paras_SP.add('S_in', value=0., vary=False) #kgDQO_S/m3
-paras_SP.add('umax', value=0.2, min=0.047, max=1.4) #dia-1
+paras_SP.add('umax', value=0.2, min=0.02, max=1.4) #dia-1
 paras_SP.add('Ks', value=100, min=0) #kgDQO_S/m3
 paras_SP.add('Yxs', value=0.1, min=0) #kgDQO_X/kgDQO_S
 paras_SP.add('Yps', value=0.934, vary=False) #kgDQO_P/kgDQO_S
@@ -96,11 +96,12 @@ sol_otim_SP = lm.minimize(otimizador_Gouveia.obj_model_monod_SP, paras_SP, 'leas
 
 print('\nResultado da otimização multivariada SP\n')
 
-print(f'Valor da função objetivo para os parâmetros otimizados: {sol_otim_SP.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(sol_otim_SP.residual))}\n')
 lm.report_fit(sol_otim_SP)
 
 simu_ajuste_SP = models.model_monod_sr([0, 240], condicoes_iniciais, sol_otim_SP.params, None, False, None)
 simu_S, simu_X, simu_P, simu_t = simu_ajuste_SP
+
 
 
 r2_simu_ajuste_SP = models.model_monod_sr ([0, 240], condicoes_iniciais, sol_otim_SP.params, t_exp, True, data)

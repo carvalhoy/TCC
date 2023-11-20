@@ -68,7 +68,7 @@ res_otimizacao = lm.minimize(otimizador_Gouveia.obj_wrapper_model_2, paras, 'lea
 
 print('\nResultado da otimização de P\n')
 
-print(f'Valor da função objetivo para os parâmetros otimizados: {res_otimizacao.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otimizacao.residual))}\n')
 lm.report_fit(res_otimizacao)
 
 condicoes_iniciais_otimizadas = [res_otimizacao.params['sAr_0'].value, res_otimizacao.params['sAl_0'].value, 0., 0.]
@@ -116,7 +116,7 @@ res_otimizacao_multivar_SP = lm.minimize(otimizador_Gouveia.obj_wrapper_model_2_
 
 print('\nResultado da otimização multivariada de SP\n') 
 
-print(f'Valor da função objetivo para os parâmetros otimizados: {res_otimizacao_multivar_SP.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otimizacao_multivar_SP.residual))}\n')
 lm.report_fit(res_otimizacao_multivar_SP)
 
 ###condição inicial de SC fixada no valor extraído no WebPlotDigitizer
@@ -167,7 +167,7 @@ res_otimizacao_multivar_SPI = lm.minimize(otimizador_Gouveia.obj_wrapper_model_2
 
 print('\nResultado da otimização multivariada de SPI\n')
 
-print(f'Valor da função objetivo para os parâmetros otimizados: {res_otimizacao_multivar_SPI.residual}\n')
+print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otimizacao_multivar_SPI.residual))}\n')
 lm.report_fit(res_otimizacao_multivar_SPI)
 
 condicoes_init_otim_multivar_SPI = [res_otimizacao_multivar_SPI.params['sAr_0'].value, res_otimizacao_multivar_SPI.params['sAl_0'].value, 0., 1.27]
